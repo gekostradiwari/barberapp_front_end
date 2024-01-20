@@ -1,15 +1,11 @@
 import 'dart:core';
 import 'package:barberapp_front_end/Model/Appuntamento.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:json_serializable/json_serializable.dart';
-import 'package:retrofit/retrofit.dart';
-import 'package:dio/dio.dart';
-import 'package:json_annotation/json_annotation.dart';
 
 part 'Cliente.g.dart';
 
 @JsonSerializable()
-class Cliente{
+class Cliente {
   late int id;
   late String nome;
   late String cognome;
@@ -17,11 +13,11 @@ class Cliente{
   late String password;
   late List<Appuntamento> appuntamenti;
 
-
   Cliente(this.id, this.nome, this.cognome, this.email, this.password,
       this.appuntamenti);
 
-  factory Cliente.fromJson(Map<String, dynamic> json) => _$ClienteFromJson(json);
+  factory Cliente.fromJson(Map<String, dynamic> json) =>
+      _$ClienteFromJson(json);
   Map<String, dynamic> toJson() => _$ClienteToJson(this);
 
   int get _id => id;

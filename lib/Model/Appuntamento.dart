@@ -4,14 +4,11 @@ import 'package:barberapp_front_end/Model/Dipendente.dart';
 import 'package:barberapp_front_end/Model/Titolare.dart';
 import 'package:barberapp_front_end/Model/Servizio.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:retrofit/retrofit.dart';
-import 'package:dio/dio.dart';
-import 'package:json_serializable/json_serializable.dart';
 
 part 'Appuntamento.g.dart';
 
 @JsonSerializable()
-class Appuntamento{
+class Appuntamento {
   late int id;
   late DateTime data;
   late DateTime ora;
@@ -20,12 +17,12 @@ class Appuntamento{
   late Titolare titolare;
   late Servizio servizio;
 
-
   Appuntamento(this.id, this.data, this.ora, this.cliente, this.dipendente,
       this.titolare, this.servizio);
 
-  factory Appuntamento.fromJson(Map<String,dynamic> json) => _$AppuntamentoFromJson(json);
-  Map<String,dynamic> toJson() => _$AppuntamentoToJson(this);
+  factory Appuntamento.fromJson(Map<String, dynamic> json) =>
+      _$AppuntamentoFromJson(json);
+  Map<String, dynamic> toJson() => _$AppuntamentoToJson(this);
 
   int get _id => id;
 

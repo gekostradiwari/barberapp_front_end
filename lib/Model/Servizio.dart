@@ -1,19 +1,12 @@
 import 'dart:core';
-import 'dart:ffi';
-import 'dart:html';
-import 'package:barberapp_front_end/Model/Cliente.dart';
 import 'package:barberapp_front_end/Model/Titolare.dart';
 import 'package:barberapp_front_end/Model/Appuntamento.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:json_annotation/json_annotation.dart';
-import 'package:retrofit/retrofit.dart';
-import 'package:dio/dio.dart';
-import 'package:json_serializable/json_serializable.dart';
 
 part 'Servizio.g.dart';
 
 @JsonSerializable()
-class Servizio{
+class Servizio {
   late int id;
   late String tipo;
   @DoubleConverter()
@@ -21,11 +14,11 @@ class Servizio{
   late List<Appuntamento> appuntamenti;
   late Titolare titolare;
 
-
   Servizio(this.id, this.tipo, this.costo, this.appuntamenti, this.titolare);
 
-  factory Servizio.fromJson(Map<String,dynamic> json) => _$ServizioFromJson(json);
-  Map<String,dynamic> toJson() => _$ServizioToJson(this);
+  factory Servizio.fromJson(Map<String, dynamic> json) =>
+      _$ServizioFromJson(json);
+  Map<String, dynamic> toJson() => _$ServizioToJson(this);
 
   int get _id => id;
 
@@ -63,7 +56,7 @@ class Servizio{
   }
 }
 
-class DoubleConverter implements JsonConverter<double, dynamic>{
+class DoubleConverter implements JsonConverter<double, dynamic> {
   const DoubleConverter();
   @override
   double fromJson(dynamic json) {
@@ -72,7 +65,8 @@ class DoubleConverter implements JsonConverter<double, dynamic>{
     } else if (json is double) {
       return json;
     }
-    throw ArgumentError.value(json, 'json', 'Invalid type for conversion to double');
+    throw ArgumentError.value(
+        json, 'json', 'Invalid type for conversion to double');
   }
 
   @override

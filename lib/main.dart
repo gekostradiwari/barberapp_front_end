@@ -1,4 +1,5 @@
 import 'package:barberapp_front_end/color_schemes.g.dart';
+import 'package:barberapp_front_end/pages/book_list_page.dart';
 import 'package:barberapp_front_end/pages/login_page.dart';
 import 'package:barberapp_front_end/pages/services_page.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
       routes: {
         "login": (context) => const LoginPage(),
         "servizi": (context) => const ServicePage(),
+        "lista_prenotazioni": (context) => const BookListPage(),
       },
       home: const LoginPage(),
     );

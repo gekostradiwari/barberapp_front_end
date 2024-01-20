@@ -16,4 +16,5 @@ abstract class getImages{
   static Image cerettaGambe = Image.asset('assets/images/Ellipse 196.png');
   static Image baffetto = Image.asset('assets/images/Ellipse 197.png');
   static Image operazioneEffettuata = Image.asset('assets/images/image 160.png');
+  static Image splashLogo = Image.asset('assets/images/logo 1.png');
 }

@@ -1,3 +1,4 @@
+import 'package:barberapp_front_end/color_schemes.g.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -41,7 +42,10 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 Text(
                   "Accedi al tuo account",
-                  style: Theme.of(context).textTheme.titleLarge,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge
+                      ?.copyWith(color: darkColorScheme.onPrimary),
                 ),
                 Padding(
                   padding: _fieldPadding,
@@ -72,7 +76,9 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void accedi(BuildContext context) {
-    Navigator.of(context).pushNamed("");
+  void accedi(BuildContext context) async {
+    //final result = await <metodo di login>
+    // se result == true cambia pagina, altrimenti errore
+    Navigator.of(context).pushNamed("servizi");
   }
 }

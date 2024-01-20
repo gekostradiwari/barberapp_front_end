@@ -6,7 +6,7 @@ import 'package:barberapp_front_end/Model/Cliente.dart';
 part 'RetrofitService.g.dart';
 
 @RestApi(baseUrl: "URL")
-abstract class RetrofitService{
+abstract class RetrofitService {
   factory RetrofitService(Dio dio) = _RetrofitService;
 
   @GET('clienti')

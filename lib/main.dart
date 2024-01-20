@@ -1,3 +1,4 @@
+import 'package:barberapp_front_end/color_schemes.g.dart';
 import 'package:barberapp_front_end/pages/login_page.dart';
 import 'package:barberapp_front_end/pages/services_page.dart';
 import 'package:flutter/material.dart';
@@ -14,12 +15,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+        colorScheme: lightColorScheme,
         textTheme: TextTheme(
             bodyLarge: Theme.of(context)
                 .textTheme
                 .bodyLarge
                 ?.copyWith(color: const Color(0xFF102C57))),
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF102C57)),
         useMaterial3: true,
       ),
       routes: {

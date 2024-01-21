@@ -8,7 +8,7 @@ part 'Servizio.g.dart';
 @JsonSerializable()
 class Servizio {
   late int id;
-  late String tipo;
+  late String tipo, image;
   @DoubleConverter()
   late double costo;
   late List<Appuntamento> appuntamenti;

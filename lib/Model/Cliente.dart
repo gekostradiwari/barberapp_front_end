@@ -20,6 +20,8 @@ class Cliente {
       _$ClienteFromJson(json);
   Map<String, dynamic> toJson() => _$ClienteToJson(this);
 
+  String get nominativo => nome+' '+cognome;
+
   int get _id => id;
 
   set _id(int value) {

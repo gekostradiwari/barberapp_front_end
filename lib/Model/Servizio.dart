@@ -14,7 +14,7 @@ class Servizio {
   late List<Appuntamento> appuntamenti;
   late Titolare titolare;
 
-  Servizio(this.id, this.tipo, this.costo, this.appuntamenti, this.titolare);
+  Servizio(this.id, this.tipo,this.image, this.costo, this.appuntamenti, this.titolare);
 
   factory Servizio.fromJson(Map<String, dynamic> json) =>
       _$ServizioFromJson(json);
@@ -50,9 +50,15 @@ class Servizio {
     titolare = value;
   }
 
+  String get _image => image;
+
+  set _image(String image){
+    image = image;
+  }
+
   @override
   String toString() {
-    return 'Servizio{id: $id, tipo: $tipo, costo: $costo, appuntamenti: $appuntamenti, titolare: $titolare}';
+    return 'Servizio{id: $id, tipo: $tipo, image: $image, costo: $costo, appuntamenti: $appuntamenti, titolare: $titolare}';
   }
 }
 

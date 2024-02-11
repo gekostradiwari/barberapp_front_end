@@ -13,9 +13,9 @@ class Appuntamento {
   late DateTime data;
   late DateTime ora;
   late Cliente cliente;
-  late Dipendente dipendente;
-  late Titolare titolare;
-  late Servizio servizio;
+  late Dipendente? dipendente;
+  late Titolare? titolare;
+  late Servizio? servizio;
 
   Appuntamento(this.id, this.data, this.ora, this.cliente, this.dipendente,
       this.titolare, this.servizio);
@@ -48,23 +48,28 @@ class Appuntamento {
     cliente = value;
   }
 
-  Dipendente get _dipendente => dipendente;
+  Dipendente? get _dipendente => dipendente;
 
-  set _dipendente(Dipendente value) {
+  set _dipendente(Dipendente? value) {
     dipendente = value;
   }
 
-  Titolare get _titolare => titolare;
+  Titolare? get _titolare => titolare;
 
-  set _titolare(Titolare value) {
+  set _titolare(Titolare? value) {
     titolare = value;
   }
 
-  Servizio get _servizio => servizio;
+  Servizio? get _servizio => servizio;
 
-  set _servizio(Servizio value) {
+  set _servizio(Servizio? value) {
     servizio = value;
   }
+
+  bool isActive() => DateTime.now().toUtc().millisecond > (data.millisecond + _hourMillisecond);
+
+
+  int get _hourMillisecond => ora.millisecond - DateTime(ora.year, ora.month,ora.day).millisecond;
 
   @override
   String toString() {

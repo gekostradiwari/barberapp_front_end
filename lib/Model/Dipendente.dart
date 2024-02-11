@@ -20,6 +20,8 @@ class Dipendente {
       _$DipendenteFromJson(json);
   Map<String, dynamic> toJson() => _$DipendenteToJson(this);
 
+  String get nominativo => nome+' '+cognome;
+
   int get _id => id;
 
   set _id(int value) {

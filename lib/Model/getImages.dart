@@ -12,8 +12,9 @@ abstract class GetImages {
     "cerettaAscelle": 'assets/images/Ellipse 195.png',
     "cerettaGambe": 'assets/images/Ellipse 196.png',
     "baffetto": 'assets/images/Ellipse 197.png',
-    "operazioneEffettuata": 'assets/images/String 160.png',
+    "operazioneEffettuata": 'assets/images/image 160.png',
     "splashLogo": 'assets/images/logo 1.png',
     "default": 'assets/images/logo 1.png',
+    "avatar": 'assets/images/Group 7626.png',
   };
 }

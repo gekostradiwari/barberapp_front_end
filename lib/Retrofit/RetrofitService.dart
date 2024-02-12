@@ -9,7 +9,7 @@ import 'package:barberapp_front_end/Model/Cliente.dart';
 import '../Model/Titolare.dart';
 part 'RetrofitService.g.dart';
 
-@RestApi(baseUrl: "URL/mettere lo slash finale nell'url")
+@RestApi(baseUrl: "http://localhost:8080")
 abstract class RetrofitService {
   factory RetrofitService(Dio dio) = _RetrofitService;
 

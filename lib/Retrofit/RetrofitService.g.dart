@@ -13,7 +13,7 @@ class _RetrofitService implements RetrofitService {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'URL/mettere lo slash finale nell\'url';
+    baseUrl ??= 'http://localhost:8080';
   }
 
   final Dio _dio;

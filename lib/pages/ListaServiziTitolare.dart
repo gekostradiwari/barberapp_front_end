@@ -60,11 +60,11 @@ class _ListaServiziTitolareState extends State<ListaServiziTitolare> {
       builder: (context, snapshot){
         if(snapshot.connectionState == ConnectionState.done){
           if(snapshot.data == null) {
-            services = [];
+            Provider.of<UserDataProvider>(context,listen: false).setServizi([]);
           }
           else
-              services  = snapshot.data!;
-          return _services(services, retrofitService);
+            Provider.of<UserDataProvider>(context,listen: false).setServizi(snapshot.data!);
+          return _services(Provider.of<UserDataProvider>(context, listen: true).servizi, retrofitService);
         }
         else{
           return Center(

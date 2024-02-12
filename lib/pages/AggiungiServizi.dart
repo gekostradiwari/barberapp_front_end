@@ -212,6 +212,7 @@ class _AggiungiServiziState extends State<AggiungiServizi> {
                                   actions: [
                                     TextButton(
                                       onPressed: () {
+                                        Provider.of<UserDataProvider>(context, listen: false).addServizi(servizio);
                                         Navigator.pop(
                                             context); // Chiudi il popup
                                       },

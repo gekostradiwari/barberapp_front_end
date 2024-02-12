@@ -22,6 +22,7 @@ class ListaDipendenti extends StatefulWidget {
 
 class _ListaDipendentiState extends State<ListaDipendenti> {
   late Dipendente dipendente;
+  late List<Dipendente> dipendentiList = Provider.of<UserDataProvider>(context,listen: true).dipendenti;
 
 
   @override
@@ -67,6 +68,7 @@ class _ListaDipendentiState extends State<ListaDipendenti> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           final List<Dipendente> dipendenti = snapshot.data == null ? [] : (snapshot.data as List<Dipendente>);
+          Provider.of<UserDataProvider>(context, listen: false).setDipendenti(dipendenti);
           return  ListView.builder(
             itemCount: dipendenti.length,//(snapshot.data as List<Appuntamento>).length,
             itemBuilder: (context, index) => BookTile(dipendente: dipendenti[index], callBack: (index) => setState(() =>

@@ -33,7 +33,7 @@ class HomePage_user extends StatelessWidget{
               child: SizedBox(
                 width: 318,
                 height: 43,
-                child: Text('Ciao ${Provider.of<UserDataProvider>(context, listen: false).cliente.nome}' /*Qui bisogna inserire il nome utente preso dal provider*/,
+                child: Text('Ciao ${Provider.of<UserDataProvider>(context, listen: true).cliente.nome}' /*Qui bisogna inserire il nome utente preso dal provider*/,
                   textAlign: TextAlign.center,
                   textDirection: TextDirection.ltr,
                   style: const TextStyle(

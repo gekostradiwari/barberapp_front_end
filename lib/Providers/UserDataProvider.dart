@@ -1,3 +1,5 @@
+
+
 import 'package:barberapp_front_end/Model/Appuntamento.dart';
 import 'package:flutter/material.dart';
 import 'package:barberapp_front_end/Model/Cliente.dart';
@@ -21,6 +23,11 @@ class UserDataProvider with ChangeNotifier {
 
   late Appuntamento _appuntamento;
 
+  late List<Appuntamento> _appuntamenti;
+  late List<Servizio> _servizi;
+
+  late List<Dipendente> _dipendenti;
+
   dynamic get instance {
     if (_utente is Cliente) {
       _cliente = _utente;
@@ -35,12 +42,57 @@ class UserDataProvider with ChangeNotifier {
       return null;
   }
 
+  List<Dipendente> get dipendenti => _dipendenti;
+  void setDipendenti(List<Dipendente> dipendenti){
+    _dipendenti = dipendenti;
+    notifyListeners();
+  }
+  void addDipendenti(Dipendente dipendente){
+    _dipendenti.add(dipendente);
+    notifyListeners();
+  }
+
+  void removeDipendenti(Dipendente dipendente){
+    _dipendenti.remove(dipendente);
+    notifyListeners();
+  }
   Appuntamento get appuntamento => _appuntamento;
 
   void setAppuntamento(Appuntamento appuntamento) {
     _appuntamento = appuntamento;
     notifyListeners();
   }
+
+  List<Appuntamento> get appuntamenti => _appuntamenti;
+
+  void setAppuntamenti(List<Appuntamento> appuntamenti){
+    _appuntamenti = appuntamenti;
+    notifyListeners();
+  }
+
+  void addAppuntamenti(Appuntamento appuntamenti){
+    _appuntamenti.add(appuntamenti);
+    notifyListeners();
+  }
+  void deleteAppuntamenti(Appuntamento appuntamenti){
+    _appuntamenti.remove(appuntamenti);
+    notifyListeners();
+  }
+
+  List<Servizio> get servizi => _servizi;
+  void setServizi(List<Servizio> servizi){
+    _servizi = servizi;
+    notifyListeners();
+  }
+  void addServizi(Servizio servizio){
+    _servizi.add(servizio);
+    notifyListeners();
+  }
+  void deleteServizio(Servizio servizio){
+    _servizi.remove(servizio);
+    notifyListeners();
+  }
+
 
   dynamic get utente => _utente;
 

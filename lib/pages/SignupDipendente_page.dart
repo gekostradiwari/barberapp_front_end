@@ -36,7 +36,9 @@ class _SignupDipendente_pageState extends State<SignupDipendente_page>{
                 Align(
                   alignment: Alignment.topLeft,
                   child: IconButton(
-                    onPressed: (){Navigator.pop(context);},
+                    onPressed: (){
+                      Navigator.pop(context);
+                      },
                     icon: Icon(Icons.arrow_back),
                   ),
                 ),
@@ -298,6 +300,7 @@ class _SignupDipendente_pageState extends State<SignupDipendente_page>{
                                     actions: [
                                       TextButton(
                                         onPressed: () {
+                                          Provider.of<UserDataProvider>(context, listen: false).addDipendenti(dipendente);
                                           Navigator.pop(context); // Chiudi il popup
                                         },
                                         child: Text('OK'),

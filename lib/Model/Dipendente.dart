@@ -11,10 +11,9 @@ class Dipendente {
   late String cognome;
   late String email;
   late String password;
-  late List<Appuntamento> appuntamenti;
 
-  Dipendente(this.id, this.nome, this.cognome, this.email, this.password,
-      this.appuntamenti);
+
+  Dipendente(this.id, this.nome, this.cognome, this.email, this.password);
 
   factory Dipendente.fromJson(Map<String, dynamic> json) =>
       _$DipendenteFromJson(json);
@@ -52,14 +51,9 @@ class Dipendente {
     password = value;
   }
 
-  List<Appuntamento> get _appuntamenti => appuntamenti;
-
-  set _appuntamenti(List<Appuntamento> value) {
-    appuntamenti = value;
-  }
 
   @override
   String toString() {
-    return 'Dipendente{id: $id, nome: $nome, cognome: $cognome, email: $email, password: $password, appuntamenti: $appuntamenti}';
+    return 'Dipendente{id: $id, nome: $nome, cognome: $cognome, email: $email, password: $password}';
   }
 }

@@ -22,15 +22,15 @@ class BarbersAvaible extends StatefulWidget {
 }
 
 class BarbersAvaibleState extends State<BarbersAvaible> {
-  late Appuntamento appuntamento;
+  late Appuntamento appuntamento = Provider.of<UserDataProvider>(context, listen: true).appuntamento;
   late List<Dipendente> dipendentiDisponibili;
   Dipendente? _selectedDipendente;
 
   void initState() {
     super.initState();
-    appuntamento = Provider.of<UserDataProvider>(context, listen: false).appuntamento;
-    appuntamento.cliente = Provider.of<UserDataProvider>(context, listen: false).cliente;
+    appuntamento.cliente = Provider.of<UserDataProvider>(context, listen: false).cliente.id;
   }
+  bool _loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -70,11 +70,10 @@ class BarbersAvaibleState extends State<BarbersAvaible> {
         RetrofitService(Dio(BaseOptions(contentType: "application/json")));
 
     return FutureBuilder(
-      future:
-          retrofitService.getFreeEmployee(appuntamento.data, appuntamento.ora),
+      future: retrofitService.getFreeEmployee(appuntamento.data, appuntamento.ora),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          if (snapshot.data == null)
+          if (snapshot.data == null || snapshot.data == [])
             dipendentiDisponibili = [];
           else
             dipendentiDisponibili = snapshot.data!;
@@ -116,16 +115,16 @@ class BarbersAvaibleState extends State<BarbersAvaible> {
                   setState(() {
                     _selectedDipendente = dipendentiDisponibili[index];
                     //Appuntamento appuntamento = Provider.of<UserDataProvider>(context, listen: false).appuntamento;
-                    appuntamento.dipendente = _selectedDipendente;
-                    Provider.of<UserDataProvider>(context, listen: false).setAppuntamento(appuntamento);
+                    appuntamento.dipendente = _selectedDipendente!.id;
                     //Navigator.pushNamed(context, '/reservationsPage');
                   });
               },
             ),
           ),
         ),
+        _loading ? Center(child: CircularProgressIndicator(),):
         FilledButton(
-          onPressed: (){
+          onPressed: () async{
             if(_selectedDipendente == null){
               showDialog(
                 context: context,
@@ -146,21 +145,23 @@ class BarbersAvaibleState extends State<BarbersAvaible> {
               );
             }
             else{
+              setState(() {
+                _loading = true;
+              });
               final retrofitService = RetrofitService(Dio(BaseOptions(contentType: "application/json")));
-              late int code;
-              retrofitService.saveAppuntamento(appuntamento);
-              (context, snapshot){
-                if(snapshot.connectionState == ConnectionState.done){
-                  code = snapshot.data!;
-                }
-                else{
-                  Center(child:  CircularProgressIndicator(),);
-                }
-              };
+              int code = await retrofitService.saveAppuntamento(appuntamento);
               if(code == 200){
+                Provider.of<UserDataProvider>(context, listen: false).setAppuntamento(appuntamento);
+                Provider.of<UserDataProvider>(context, listen: false).addAppuntamenti(appuntamento);
+                setState(() {
+                  _loading = false;
+                });
                 Navigator.pushNamed(context,'/prenotazioneEffettuata');
               }
               else{
+                setState(() {
+                  _loading = false;
+                });
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {

@@ -67,12 +67,12 @@ class _ListaDipendentiState extends State<ListaDipendenti> {
       future: retrofitService.dipendentiGetAll(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          final List<Dipendente> dipendenti = snapshot.data == null ? [] : (snapshot.data as List<Dipendente>);
-          Provider.of<UserDataProvider>(context, listen: false).setDipendenti(dipendenti);
+          dipendentiList = snapshot.data == null ? [] : (snapshot.data as List<Dipendente>);
+          Provider.of<UserDataProvider>(context, listen: false).setDipendenti(dipendentiList);
           return  ListView.builder(
-            itemCount: dipendenti.length,//(snapshot.data as List<Appuntamento>).length,
-            itemBuilder: (context, index) => BookTile(dipendente: dipendenti[index], callBack: (index) => setState(() =>
-                retrofitService.deleteDipendente(dipendenti[index])), index: index,
+            itemCount: dipendentiList.length,//(snapshot.data as List<Appuntamento>).length,
+            itemBuilder: (context, index) => BookTile(dipendente: dipendentiList[index], callBack: (index) => setState(() =>
+                retrofitService.deleteDipendente(dipendentiList[index])), index: index,
             ),
           );
 

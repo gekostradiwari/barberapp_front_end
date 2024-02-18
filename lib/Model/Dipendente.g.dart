@@ -12,9 +12,6 @@ Dipendente _$DipendenteFromJson(Map<String, dynamic> json) => Dipendente(
       json['cognome'] as String,
       json['email'] as String,
       json['password'] as String,
-      (json['appuntamenti'] as List<dynamic>)
-          .map((e) => Appuntamento.fromJson(e as Map<String, dynamic>))
-          .toList(),
     );
 
 Map<String, dynamic> _$DipendenteToJson(Dipendente instance) =>
@@ -24,5 +21,4 @@ Map<String, dynamic> _$DipendenteToJson(Dipendente instance) =>
       'cognome': instance.cognome,
       'email': instance.email,
       'password': instance.password,
-      'appuntamenti': instance.appuntamenti,
     };

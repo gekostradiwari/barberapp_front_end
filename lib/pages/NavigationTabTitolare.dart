@@ -27,37 +27,37 @@ class NavigationTabTitolare extends StatefulWidget{
 class _NavigationTabTitolareState extends State<NavigationTabTitolare>{
   int currentPageIndex = 0;
   @override
-  Widget build(BuildContext context){
+  Widget build( BuildContext context){
     return Scaffold(
-        backgroundColor: Colors.white,
-        bottomNavigationBar: NavigationBar(
           backgroundColor: Colors.white,
-          onDestinationSelected: (int index){
-            setState(() {
-              currentPageIndex = index;
-            });
-          },
-          indicatorColor: Colors.lightBlue,
-          selectedIndex: currentPageIndex,
-          destinations: const <Widget>[
-            NavigationDestination(
-              selectedIcon: Icon(Icons.home),
-              icon: Icon(Icons.home_outlined),
-              label: 'Prenotazioni',
-            ),
-            NavigationDestination(
-              selectedIcon: Icon(Icons.person_add),
-              icon: Icon(Icons.person_add_outlined),
-              label: 'Dipendenti',
-            ),
-            NavigationDestination(
-                selectedIcon: Icon(Icons.add_business),
-                icon: Icon(Icons.add_business_outlined),
-                label: 'Servizi'
-            ),
-          ],
-        ),
-        body: <Widget>[ListaPrenotazioniTitolare(),ListaDipendenti(),ListaServiziTitolare()][currentPageIndex],
-      );
+          bottomNavigationBar: NavigationBar(
+            backgroundColor: Colors.white,
+            onDestinationSelected: (int index){
+              setState(() {
+                currentPageIndex = index;
+              });
+            },
+            indicatorColor: Colors.lightBlue,
+            selectedIndex: currentPageIndex,
+            destinations: const <Widget>[
+              NavigationDestination(
+                selectedIcon: Icon(Icons.home),
+                icon: Icon(Icons.home_outlined),
+                label: 'Prenotazioni',
+              ),
+              NavigationDestination(
+                selectedIcon: Icon(Icons.person_add),
+                icon: Icon(Icons.person_add_outlined),
+                label: 'Dipendenti',
+              ),
+              NavigationDestination(
+                  selectedIcon: Icon(Icons.add_business),
+                  icon: Icon(Icons.add_business_outlined),
+                  label: 'Servizi'
+              ),
+            ],
+          ),
+          body: <Widget>[ListaPrenotazioniTitolare(),ListaDipendenti(),ListaServiziTitolare()][currentPageIndex],
+        );
   }
 }

@@ -11,10 +11,9 @@ class Cliente {
   late String cognome;
   late String email;
   late String password;
-  late List<Appuntamento> appuntamenti;
 
-  Cliente(this.id, this.nome, this.cognome, this.email, this.password,
-      this.appuntamenti);
+
+  Cliente(this.id, this.nome, this.cognome, this.email, this.password);
 
   factory Cliente.fromJson(Map<String, dynamic> json) =>
       _$ClienteFromJson(json);
@@ -52,14 +51,10 @@ class Cliente {
     password = value;
   }
 
-  List<Appuntamento> get _appuntamenti => appuntamenti;
 
-  set _appuntamenti(List<Appuntamento> value) {
-    appuntamenti = value;
-  }
 
   @override
   String toString() {
-    return 'Cliente{id: $id, nome: $nome, cognome: $cognome, email: $email, password: $password, appuntamenti: $appuntamenti}';
+    return 'Cliente{id: $id, nome: $nome, cognome: $cognome, email: $email, password: $password}';
   }
 }

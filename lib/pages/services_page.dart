@@ -22,7 +22,7 @@ class _ServicePageState extends State<ServicePage> {
     Servizio(1, "taglio", 3, [], Titolare(1, "", "", "", "", [], [])),
   ];*/
 
-  late List<Servizio>services;
+  late List<Servizio>services = Provider.of<UserDataProvider>(context, listen: true).servizi;
 
 
   @override
@@ -54,10 +54,15 @@ class _ServicePageState extends State<ServicePage> {
         future: retrofitService.getServices(),
         builder: (context, snapshot){
           if(snapshot.connectionState == ConnectionState.done){
-            if(snapshot.data == null)
+            if(snapshot.data == null) {
               services = [];
-            else
+              Provider.of<UserDataProvider>(context, listen: false).setServizi(
+                  []);
+            }
+            else {
               services = snapshot.data!;
+              Provider.of<UserDataProvider>(context,listen: false).setServizi(snapshot.data);
+            }
             return _services(services);
           }
           else{

@@ -9,6 +9,7 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
 
 import '../Model/Cliente.dart';
+import '../Model/Titolare.dart';
 import '../Retrofit/RetrofitService.dart';
 import 'package:barberapp_front_end/RouteGenerator.dart';
 
@@ -20,7 +21,16 @@ class ProfiloTitolare extends StatefulWidget {
 }
 
 class _ProfiloTitolareState extends State<ProfiloTitolare> {
+  late Titolare titolare = Provider.of<UserDataProvider>(context, listen: true).titolare;
+  Future<int> _checkEmail(String email)async{
+    int code;
+    final retrofitService = RetrofitService(Dio(BaseOptions(contentType: "application/json")));
+    code = await retrofitService.checkEmailTitolare(email);
+    return code;
+  }
   final _formKey = GlobalKey<FormBuilderState>();
+  bool _loading = false;
+  late int codeEmail;
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +57,7 @@ class _ProfiloTitolareState extends State<ProfiloTitolare> {
               ),
             ),
             actions: [
+              _loading ? Center(child: CircularProgressIndicator(),):
               Padding(
                 padding: EdgeInsets.only(right: 24.0),
                 child: CircleAvatar(
@@ -62,29 +73,22 @@ class _ProfiloTitolareState extends State<ProfiloTitolare> {
                           builder: (context) {
                             return AlertDialog(
                               title: Text(
-                                  '${Provider.of<UserDataProvider>(context, listen: false).titolare.nome} ${Provider.of<UserDataProvider>(context, listen: false).titolare.cognome}'),
+                                  '${titolare.nome} ${titolare.cognome}'),
                               content: Text('Cancella account'),
                               actions: [
                                 TextButton(
-                                  onPressed: () {
-                                    final retrofitService = RetrofitService(Dio(
-                                        BaseOptions(
-                                            contentType: "application/json")));
-                                    retrofitService.titolareDelete(
-                                        Provider.of<UserDataProvider>(context,
-                                            listen: false)
-                                            .titolare);
-                                        (context, snapshot) {
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.done) {
-                                        Navigator.pushNamed(context,
-                                            '/login_page'); // Chiudi il popup
-                                      } else {
-                                        Center(
-                                          child: CircularProgressIndicator(),
-                                        );
-                                      }
-                                    };
+                                  onPressed: () async {
+                                    final retrofitService = RetrofitService(Dio(BaseOptions(contentType: "application/json")));
+                                    setState(() {
+                                      _loading = true;
+                                    });
+                                    int code = await retrofitService.titolareDelete(titolare);
+                                    if(code == 200){
+                                      setState(() {
+                                        _loading = false;
+                                      });
+                                      Navigator.pushNamed(context, '/login_page');
+                                    }
                                   },
                                   child: Text('SI'),
                                 ),
@@ -143,9 +147,7 @@ class _ProfiloTitolareState extends State<ProfiloTitolare> {
                 children: [
                   Image.asset(GetImages.images["avatar"]!),
                   Text(
-                    Provider.of<UserDataProvider>(context, listen: true)
-                        .titolare
-                        .nome,
+                    titolare.nome,
                     style: const TextStyle(
                       color: Color(0xFF23303B),
                       fontSize: 22,
@@ -177,11 +179,7 @@ class _ProfiloTitolareState extends State<ProfiloTitolare> {
                                 name: 'nome',
                                 autofocus: false,
                                 textInputAction: TextInputAction.next,
-                                initialValue: Provider.of<UserDataProvider>(
-                                    context,
-                                    listen: true)
-                                    .titolare
-                                    .nome,
+                                initialValue: titolare.nome,
                                 decoration: const InputDecoration(
                                   labelText: 'Nome',
                                   labelStyle: TextStyle(
@@ -217,11 +215,7 @@ class _ProfiloTitolareState extends State<ProfiloTitolare> {
                               child: FormBuilderTextField(
                                 name: 'cognome',
                                 autofocus: false,
-                                initialValue: Provider.of<UserDataProvider>(
-                                    context,
-                                    listen: true)
-                                    .titolare
-                                    .cognome,
+                                initialValue: titolare.cognome,
                                 validator: FormBuilderValidators.compose([
                                   FormBuilderValidators.required(
                                       errorText:
@@ -258,11 +252,7 @@ class _ProfiloTitolareState extends State<ProfiloTitolare> {
                               child: FormBuilderTextField(
                                 name: 'email',
                                 autofocus: false,
-                                initialValue: Provider.of<UserDataProvider>(
-                                    context,
-                                    listen: true)
-                                    .titolare
-                                    .email,
+                                initialValue: titolare.email,
                                 validator: FormBuilderValidators.compose([
                                   FormBuilderValidators.required(
                                       errorText:
@@ -270,22 +260,7 @@ class _ProfiloTitolareState extends State<ProfiloTitolare> {
                                   FormBuilderValidators.email(
                                       errorText: 'Formato email non valido'),
                                       (value) {
-                                    late int code;
-                                    final retrofitService = RetrofitService(Dio(
-                                        BaseOptions(
-                                            contentType: "application/json")));
-                                    retrofitService.checkEmailTitolare(value!);
-                                        (context, snapshot) {
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.done) {
-                                        code = snapshot.data!;
-                                      } else {
-                                        Center(
-                                          child: CircularProgressIndicator(),
-                                        );
-                                      }
-                                    };
-                                    if (code == 500) {
+                                    if (codeEmail == 500) {
                                       return 'Email già registrata';
                                     }
                                   }
@@ -320,11 +295,7 @@ class _ProfiloTitolareState extends State<ProfiloTitolare> {
                               ),
                               child: FormBuilderTextField(
                                 name: 'password',
-                                initialValue: Provider.of<UserDataProvider>(
-                                    context,
-                                    listen: true)
-                                    .titolare
-                                    .password,
+                                initialValue: titolare.password,
                                 autofocus: false,
                                 obscureText: true,
                                 validator: FormBuilderValidators.compose([
@@ -357,9 +328,20 @@ class _ProfiloTitolareState extends State<ProfiloTitolare> {
                   Padding(
                     padding: EdgeInsets.only(top: 20),
                     child: FilledButton(
-                      onPressed: () {
-                        final validation = _formKey.currentState?.validate();
+                      onPressed: () async {
+                        setState(() {
+                          _loading = true;
+                        });
+                        int ControlloMail = await _checkEmail(_formKey.currentState!.fields['email']!.value.toString());
+                        setState(() {
+                          _loading  = false;
+                          codeEmail = ControlloMail;
+                        });
+                        final validation = _formKey.currentState?.validate() ?? false;
                         if (validation!) {
+                          setState(() {
+                            _loading = true;
+                          });
                           _formKey.currentState!.save();
                           Provider.of<UserDataProvider>(context, listen: false)
                               .titolare
@@ -381,24 +363,16 @@ class _ProfiloTitolareState extends State<ProfiloTitolare> {
                               .password =
                               _formKey.currentState!.fields['password']!.value
                                   .toString();
-                          late int code;
                           final retrofitService = RetrofitService(Dio(
                               BaseOptions(contentType: "application/json")));
-                          retrofitService.updateTitolare(
+                          int ControlloUpdate = await retrofitService.updateTitolare(
                               Provider.of<UserDataProvider>(context,
                                   listen: false)
                                   .titolare);
-                              (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.done) {
-                              code = snapshot.data!;
-                            } else {
-                              Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            }
-                          };
-                          if (code == 200) {
+                          if (ControlloUpdate == 200) {
+                            setState(() {
+                              _loading = false;
+                            });
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
@@ -419,6 +393,9 @@ class _ProfiloTitolareState extends State<ProfiloTitolare> {
                               },
                             );
                           } else {
+                            setState(() {
+                              _loading = false;
+                            });
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {

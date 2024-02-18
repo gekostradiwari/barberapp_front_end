@@ -23,7 +23,7 @@ class _ListaServiziTitolareState extends State<ListaServiziTitolare> {
     Servizio(1, "taglio+barba+shampoo+ciaociao+byebye",'', 3, [], Titolare(1, "", "", "", "", [], [])),
   ];*/
 
-  late List<Servizio>services;
+  late List<Servizio>services = Provider.of<UserDataProvider>(context, listen: true).servizi;
 
 
   @override
@@ -60,11 +60,14 @@ class _ListaServiziTitolareState extends State<ListaServiziTitolare> {
       builder: (context, snapshot){
         if(snapshot.connectionState == ConnectionState.done){
           if(snapshot.data == null) {
+            services = [];
             Provider.of<UserDataProvider>(context,listen: false).setServizi([]);
           }
-          else
-            Provider.of<UserDataProvider>(context,listen: false).setServizi(snapshot.data!);
-          return _services(Provider.of<UserDataProvider>(context, listen: true).servizi, retrofitService);
+          else {
+            services = snapshot.data;
+            Provider.of<UserDataProvider>(context, listen: false).setServizi(snapshot.data!);
+          }
+          return _services(services, retrofitService);
         }
         else{
           return Center(

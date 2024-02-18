@@ -3,12 +3,18 @@
 
 
 
+
 import 'package:barberapp_front_end/Model/Servizio.dart';
 import 'package:barberapp_front_end/pages/AggiungiServizi.dart';
 import 'package:barberapp_front_end/pages/BarbersAvaible.dart';
 import 'package:barberapp_front_end/pages/HomePage_user.dart';
+import 'package:barberapp_front_end/pages/ListaDipendenti.dart';
+import 'package:barberapp_front_end/pages/ListaPrenotazioni.dart';
 import 'package:barberapp_front_end/pages/ListaPrenotazioniDipendenti.dart';
+import 'package:barberapp_front_end/pages/ListaPrenotazioniTitolare.dart';
+import 'package:barberapp_front_end/pages/ListaServiziTitolare.dart';
 import 'package:barberapp_front_end/pages/NavigationTab.dart';
+import 'package:barberapp_front_end/pages/NavigationTabTitolare.dart';
 import 'package:barberapp_front_end/pages/PrenotazioneEffettuata.dart';
 import 'package:barberapp_front_end/pages/ProfiloDipendente.dart';
 import 'package:barberapp_front_end/pages/ProfiloTitolare.dart';
@@ -54,6 +60,16 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (context) => ProfiloTitolare());
       case '/AggiungiServizio':
         return MaterialPageRoute(builder: (context) => AggiungiServizi());
+      case '/NavigationTabTitolare':
+        return MaterialPageRoute(builder: (context) => NavigationTabTitolare());
+      case '/ListaDipendenti':
+        return MaterialPageRoute(builder: (context) => ListaDipendenti());
+      case '/ListaPrenotazioni':
+        return MaterialPageRoute(builder: (context) => ListaPrenotazioni());
+      case '/ListaPrenotazioniTitolare':
+        return MaterialPageRoute(builder: (context) => ListaPrenotazioniTitolare());
+      case '/ListaServiziTitolare':
+        return MaterialPageRoute(builder: (context) => ListaServiziTitolare());
 
 
       default:

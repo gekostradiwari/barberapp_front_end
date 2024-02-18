@@ -13,7 +13,7 @@ class _RetrofitService implements RetrofitService {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'http://localhost:8080';
+    baseUrl ??= 'http://192.168.1.220:8080';
   }
 
   final Dio _dio;
@@ -34,7 +34,7 @@ class _RetrofitService implements RetrofitService {
     )
             .compose(
               _dio.options,
-              'clienti/get-all',
+              '/clienti/get-all',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -62,7 +62,7 @@ class _RetrofitService implements RetrofitService {
     )
         .compose(
           _dio.options,
-          'cliente/check',
+          '/cliente/check',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -89,7 +89,7 @@ class _RetrofitService implements RetrofitService {
     )
         .compose(
           _dio.options,
-          'clienti/save',
+          '/clienti/save',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -116,7 +116,7 @@ class _RetrofitService implements RetrofitService {
     )
         .compose(
           _dio.options,
-          'clienti/update',
+          '/clienti/update',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -143,7 +143,7 @@ class _RetrofitService implements RetrofitService {
     )
         .compose(
           _dio.options,
-          'clienti/delete',
+          '/clienti/delete',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -164,16 +164,20 @@ class _RetrofitService implements RetrofitService {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = email;
+    final _data = {
+      'email': email,
+      'password': password,
+    };
     final _result =
         await _dio.fetch<Map<String, dynamic>?>(_setStreamType<Cliente>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
+      contentType: 'application/x-www-form-urlencoded',
     )
             .compose(
               _dio.options,
-              'clienti/login',
+              '/clienti/login',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -194,16 +198,20 @@ class _RetrofitService implements RetrofitService {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = email;
+    final _data = {
+      'email': email,
+      'password': password,
+    };
     final _result = await _dio
         .fetch<Map<String, dynamic>?>(_setStreamType<Titolare>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
+      contentType: 'application/x-www-form-urlencoded',
     )
             .compose(
               _dio.options,
-              'titolari/login',
+              '/titolari/login',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -231,7 +239,7 @@ class _RetrofitService implements RetrofitService {
     )
         .compose(
           _dio.options,
-          'titolari/delete',
+          '/titolari/delete',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -257,7 +265,7 @@ class _RetrofitService implements RetrofitService {
     )
         .compose(
           _dio.options,
-          'titolari/check',
+          '/titolari/check',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -284,7 +292,7 @@ class _RetrofitService implements RetrofitService {
     )
         .compose(
           _dio.options,
-          'titolari/update',
+          '/titolari/update',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -311,7 +319,7 @@ class _RetrofitService implements RetrofitService {
     )
             .compose(
               _dio.options,
-              'servizi/get-all',
+              '/servizi/get-all',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -340,7 +348,7 @@ class _RetrofitService implements RetrofitService {
     )
         .compose(
           _dio.options,
-          'servizi/save',
+          '/servizi/save',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -367,7 +375,7 @@ class _RetrofitService implements RetrofitService {
     )
         .compose(
           _dio.options,
-          'servizi/delete',
+          '/servizi/delete',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -394,7 +402,7 @@ class _RetrofitService implements RetrofitService {
     )
         .compose(
           _dio.options,
-          'servizi/update',
+          '/servizi/update',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -415,16 +423,20 @@ class _RetrofitService implements RetrofitService {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = data;
+    final _data = {
+      'data': data,
+      'ora': ora,
+    };
     final _result = await _dio
         .fetch<List<dynamic>>(_setStreamType<List<Dipendente>>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
+      contentType: 'application/x-www-form-urlencoded',
     )
             .compose(
               _dio.options,
-              'dipendenti/dipendentiDisponibili',
+              '/dipendenti/dipendentiDisponibili',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -447,16 +459,20 @@ class _RetrofitService implements RetrofitService {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = email;
+    final _data = {
+      'email': email,
+      'password': password,
+    };
     final _result = await _dio
         .fetch<Map<String, dynamic>?>(_setStreamType<Dipendente>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
+      contentType: 'application/x-www-form-urlencoded',
     )
             .compose(
               _dio.options,
-              'dipendenti/login',
+              '/dipendenti/login',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -484,7 +500,7 @@ class _RetrofitService implements RetrofitService {
     )
             .compose(
               _dio.options,
-              'dipendenti/get-all',
+              '/dipendenti/get-all',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -496,6 +512,33 @@ class _RetrofitService implements RetrofitService {
     var value = _result.data!
         .map((dynamic i) => Dipendente.fromJson(i as Map<String, dynamic>))
         .toList();
+    return value;
+  }
+
+  @override
+  Future<Dipendente> getDipendenteById(int id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = id;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<Dipendente>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/dipendenti/getById',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = Dipendente.fromJson(_result.data!);
     return value;
   }
 
@@ -513,7 +556,7 @@ class _RetrofitService implements RetrofitService {
     )
         .compose(
           _dio.options,
-          'dipendenti/delete',
+          '/dipendenti/delete',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -540,7 +583,7 @@ class _RetrofitService implements RetrofitService {
     )
         .compose(
           _dio.options,
-          'appuntamenti/save',
+          '/appuntamenti/save',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -566,7 +609,7 @@ class _RetrofitService implements RetrofitService {
     )
         .compose(
           _dio.options,
-          'dipendenti/check',
+          '/dipendenti/check',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -593,7 +636,7 @@ class _RetrofitService implements RetrofitService {
     )
         .compose(
           _dio.options,
-          'dipendenti/update',
+          '/dipendenti/update',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -620,7 +663,7 @@ class _RetrofitService implements RetrofitService {
     )
         .compose(
           _dio.options,
-          'dipendenti/save',
+          '/dipendenti/save',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -648,7 +691,7 @@ class _RetrofitService implements RetrofitService {
     )
             .compose(
               _dio.options,
-              'appuntamenti/getAppointment-ByCliente',
+              '/appuntamenti/getAppointment-ByCliente',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -679,7 +722,7 @@ class _RetrofitService implements RetrofitService {
     )
             .compose(
               _dio.options,
-              'appuntamenti/getAppointment-ByDipendente',
+              '/appuntamenti/getAppointment-ByDipendente',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -708,7 +751,7 @@ class _RetrofitService implements RetrofitService {
     )
         .compose(
           _dio.options,
-          'appuntamenti/delete',
+          '/appuntamenti/delete',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -735,7 +778,7 @@ class _RetrofitService implements RetrofitService {
     )
             .compose(
               _dio.options,
-              'appuntamenti/get-all-appuntamenti',
+              '/appuntamenti/get-all-appuntamenti',
               queryParameters: queryParameters,
               data: _data,
             )

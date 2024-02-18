@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../Model/Cliente.dart';
+import '../Model/Dipendente.dart';
 import '../Retrofit/RetrofitService.dart';
 
 
@@ -20,13 +21,25 @@ class ListaPrenotazioni extends StatefulWidget {
 }
 
 class _ListaPrenotazioniState extends State<ListaPrenotazioni> {
- late Cliente cliente;
+ late Cliente cliente = Provider.of<UserDataProvider>(context, listen: true).cliente;
+ late List<Appuntamento> appuntamenti = Provider.of<UserDataProvider>(context, listen: true).appuntamenti;
+
+ late List<Dipendente> dipendenti = Provider.of<UserDataProvider>(context, listen: true).dipendenti;
+ @override
+  void initState() {
+   final retrofitService = RetrofitService(Dio(BaseOptions(contentType: "application/json")));
+   Future<List<Dipendente>> futureDipendenti = retrofitService.dipendentiGetAll();
+   futureDipendenti.then((dipendenti) => {
+   Provider.of<UserDataProvider>(context, listen: false).setDipendenti(dipendenti)
+   });
+    super.initState();
+  }
+
 
 
   @override
   Widget build(BuildContext context) {
     //controllare se la variabile cliente è stata inizializzata
-    cliente = Provider.of<UserDataProvider>(context, listen: false).cliente;
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -60,11 +73,12 @@ class _ListaPrenotazioniState extends State<ListaPrenotazioni> {
      future: retrofitService.getAppuntamentiByCliente(cliente),
      builder: (context, snapshot) {
        if (snapshot.connectionState == ConnectionState.done) {
-         final List<Appuntamento> appuntamenti = snapshot.data == null ? [] : (snapshot.data as List<Appuntamento>);
+         appuntamenti = snapshot.data == null ? [] : (snapshot.data as List<Appuntamento>);
+         Provider.of<UserDataProvider>(context, listen: false).setAppuntamenti(appuntamenti);
          return  ListView.builder(
            itemCount: appuntamenti.length,//(snapshot.data as List<Appuntamento>).length,
            itemBuilder: (context, index) => BookTile(appuntamento: appuntamenti[index], callBack: (index) => setState(() =>
-           retrofitService.deleteAppuntamento(appuntamenti[index])), index: index,
+           retrofitService.deleteAppuntamento(appuntamenti[index])),dipendenti: dipendenti, index: index,
            ),
          );
 
@@ -78,10 +92,11 @@ class _ListaPrenotazioniState extends State<ListaPrenotazioni> {
  }
 }
 class BookTile extends StatelessWidget {
-  const BookTile({super.key,  required this.appuntamento, required this.callBack, required this.index});
+  const BookTile({super.key,  required this.appuntamento, required this.callBack, required this.dipendenti, required this.index});
   final Appuntamento appuntamento;
   final Function(int) callBack;
   final int index;
+  final List<Dipendente> dipendenti;
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +117,7 @@ class BookTile extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(appuntamento.dipendente!.nominativo),
+                    Text(dipendenti.firstWhere((element) => element.id == appuntamento.cliente).nominativo),
                     Text('${appuntamento.data.toString().substring(0,11)} ${appuntamento.ora.hour}:${appuntamento.ora.minute}'),
                   ],
                 ),

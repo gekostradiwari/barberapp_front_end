@@ -9,6 +9,7 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
 
 import '../Model/Cliente.dart';
+import '../Model/Dipendente.dart';
 import '../Retrofit/RetrofitService.dart';
 import 'package:barberapp_front_end/RouteGenerator.dart';
 
@@ -20,7 +21,16 @@ class ProfiloDipendente extends StatefulWidget {
 }
 
 class _ProfiloDipendenteState extends State<ProfiloDipendente> {
+  late Dipendente dipendente = Provider.of<UserDataProvider>(context, listen: true).dipendente;
+  Future<int> _checkEmail(String email)async{
+    int code;
+    final retrofitService = RetrofitService(Dio(BaseOptions(contentType: "application/json")));
+    code = await retrofitService.checkEmailDipendente(email);
+    return code;
+  }
   final _formKey = GlobalKey<FormBuilderState>();
+  bool _loading = false;
+  late int codeEmail;
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +57,7 @@ class _ProfiloDipendenteState extends State<ProfiloDipendente> {
             ),
           ),
           actions: [
+            _loading ? Center(child: CircularProgressIndicator(),):
             Padding(
               padding: EdgeInsets.only(right: 24.0),
               child: CircleAvatar(
@@ -61,29 +72,25 @@ class _ProfiloDipendenteState extends State<ProfiloDipendente> {
                         builder: (context) {
                           return AlertDialog(
                             title: Text(
-                                '${Provider.of<UserDataProvider>(context, listen: false).dipendente.nome} ${Provider.of<UserDataProvider>(context, listen: false).dipendente.cognome}'),
+                                '${dipendente.nome} ${dipendente.cognome}'),
                             content: Text('Cancella account'),
                             actions: [
                               TextButton(
-                                onPressed: () {
+                                onPressed: () async{
                                   final retrofitService = RetrofitService(Dio(
                                       BaseOptions(
                                           contentType: "application/json")));
-                                  retrofitService.deleteDipendente(
-                                      Provider.of<UserDataProvider>(context,
-                                              listen: false)
-                                          .dipendente);
-                                  (context, snapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.done) {
-                                      Navigator.pushNamed(context,
-                                          '/login_page'); // Chiudi il popup
-                                    } else {
-                                      Center(
-                                        child: CircularProgressIndicator(),
-                                      );
-                                    }
-                                  };
+                                  setState(() {
+                                    _loading = true;
+                                  });
+                                  int code = await retrofitService.deleteDipendente(dipendente);
+                                  if(code == 200){
+                                    setState(() {
+                                      _loading = false;
+                                    });
+                                    Navigator.pushNamed(context, '/login_page');
+                                  }
+
                                 },
                                 child: Text('SI'),
                               ),
@@ -144,9 +151,7 @@ class _ProfiloDipendenteState extends State<ProfiloDipendente> {
               children: [
                 Image.asset(GetImages.images["avatar"]!),
                 Text(
-                  Provider.of<UserDataProvider>(context, listen: true)
-                      .dipendente
-                      .nome,
+                  dipendente.nome,
                   style: const TextStyle(
                     color: Color(0xFF23303B),
                     fontSize: 22,
@@ -178,11 +183,7 @@ class _ProfiloDipendenteState extends State<ProfiloDipendente> {
                               name: 'nome',
                               autofocus: false,
                               textInputAction: TextInputAction.next,
-                              initialValue: Provider.of<UserDataProvider>(
-                                      context,
-                                      listen: true)
-                                  .dipendente
-                                  .nome,
+                              initialValue: dipendente.nome,
                               decoration: const InputDecoration(
                                 labelText: 'Nome',
                                 labelStyle: TextStyle(
@@ -217,11 +218,7 @@ class _ProfiloDipendenteState extends State<ProfiloDipendente> {
                             child: FormBuilderTextField(
                               name: 'cognome',
                               autofocus: false,
-                              initialValue: Provider.of<UserDataProvider>(
-                                      context,
-                                      listen: true)
-                                  .dipendente
-                                  .cognome,
+                              initialValue: dipendente.cognome,
                               validator: FormBuilderValidators.compose([
                                 FormBuilderValidators.required(
                                     errorText: 'Il campo non può essere vuoto'),
@@ -257,33 +254,14 @@ class _ProfiloDipendenteState extends State<ProfiloDipendente> {
                             child: FormBuilderTextField(
                               name: 'email',
                               autofocus: false,
-                              initialValue: Provider.of<UserDataProvider>(
-                                      context,
-                                      listen: true)
-                                  .dipendente
-                                  .email,
+                              initialValue: dipendente.email,
                               validator: FormBuilderValidators.compose([
                                 FormBuilderValidators.required(
                                     errorText: 'Il campo non può essere vuoto'),
                                 FormBuilderValidators.email(
                                     errorText: 'Formato email non valido'),
                                 (value) {
-                                  late int code;
-                                  final retrofitService = RetrofitService(Dio(
-                                      BaseOptions(
-                                          contentType: "application/json")));
-                                  retrofitService.checkEmailDipendente(value!);
-                                  (context, snapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.done) {
-                                      code = snapshot.data!;
-                                    } else {
-                                      Center(
-                                        child: CircularProgressIndicator(),
-                                      );
-                                    }
-                                  };
-                                  if (code == 500) {
+                                  if (codeEmail == 500) {
                                     return 'Email già registrata';
                                   }
                                 }
@@ -318,11 +296,7 @@ class _ProfiloDipendenteState extends State<ProfiloDipendente> {
                             ),
                             child: FormBuilderTextField(
                               name: 'password',
-                              initialValue: Provider.of<UserDataProvider>(
-                                      context,
-                                      listen: true)
-                                  .dipendente
-                                  .password,
+                              initialValue: dipendente.password,
                               autofocus: false,
                               obscureText: true,
                               validator: FormBuilderValidators.compose([
@@ -354,9 +328,20 @@ class _ProfiloDipendenteState extends State<ProfiloDipendente> {
                 Padding(
                   padding: EdgeInsets.only(top: 20),
                   child: FilledButton(
-                    onPressed: () {
-                      final validation = _formKey.currentState?.validate();
+                    onPressed: () async{
+                      setState(() {
+                        _loading = true;
+                      });
+                      int ControlloMail = await _checkEmail(_formKey.currentState!.fields['email']!.value.toString());
+                      setState(() {
+                        _loading = false;
+                        codeEmail = ControlloMail;
+                      });
+                      final validation = _formKey.currentState?.validate() ?? false;
                       if (validation!) {
+                        setState(() {
+                          _loading = true;
+                        });
                         _formKey.currentState!.save();
                         Provider.of<UserDataProvider>(context, listen: false)
                                 .dipendente
@@ -378,24 +363,12 @@ class _ProfiloDipendenteState extends State<ProfiloDipendente> {
                                 .password =
                             _formKey.currentState!.fields['password']!.value
                                 .toString();
-                        late int code;
-                        final retrofitService = RetrofitService(
-                            Dio(BaseOptions(contentType: "application/json")));
-                        retrofitService.updateDipendente(
-                            Provider.of<UserDataProvider>(context,
-                                    listen: false)
-                                .dipendente);
-                        (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.done) {
-                            code = snapshot.data!;
-                          } else {
-                            Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                        };
-                        if (code == 200) {
+                        final retrofitService = RetrofitService(Dio(BaseOptions(contentType: "application/json")));
+                        int ControlloUpdate = await retrofitService.updateDipendente(Provider.of<UserDataProvider>(context, listen: false).dipendente);
+                        if (ControlloUpdate == 200) {
+                          setState(() {
+                            _loading = false;
+                          });
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
@@ -415,6 +388,9 @@ class _ProfiloDipendenteState extends State<ProfiloDipendente> {
                             },
                           );
                         } else {
+                          setState(() {
+                            _loading = false;
+                          });
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {

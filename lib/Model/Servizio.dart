@@ -11,10 +11,9 @@ class Servizio {
   late String tipo, image;
   @DoubleConverter()
   late double costo;
-  late List<Appuntamento> appuntamenti;
-  late Titolare titolare;
+  late int? titolare;
 
-  Servizio(this.id, this.tipo,this.image, this.costo, this.appuntamenti, this.titolare);
+  Servizio(this.id, this.tipo,this.image, this.costo, this.titolare);
 
   factory Servizio.fromJson(Map<String, dynamic> json) =>
       _$ServizioFromJson(json);
@@ -38,15 +37,10 @@ class Servizio {
     costo = value;
   }
 
-  List<Appuntamento> get _appuntamenti => appuntamenti;
 
-  set _appuntamenti(List<Appuntamento> value) {
-    appuntamenti = value;
-  }
+  int? get _titolare => titolare;
 
-  Titolare get _titolare => titolare;
-
-  set _titolare(Titolare value) {
+  set _titolare(int? value) {
     titolare = value;
   }
 
@@ -58,7 +52,7 @@ class Servizio {
 
   @override
   String toString() {
-    return 'Servizio{id: $id, tipo: $tipo, image: $image, costo: $costo, appuntamenti: $appuntamenti, titolare: $titolare}';
+    return 'Servizio{id: $id, tipo: $tipo, image: $image, costo: $costo, titolare: $titolare}';
   }
 }
 

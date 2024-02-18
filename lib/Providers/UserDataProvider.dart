@@ -23,10 +23,10 @@ class UserDataProvider with ChangeNotifier {
 
   late Appuntamento _appuntamento;
 
-  late List<Appuntamento> _appuntamenti;
-  late List<Servizio> _servizi;
-
-  late List<Dipendente> _dipendenti;
+  late List<Appuntamento> _appuntamenti = [];
+  late List<Servizio> _servizi = [];
+  late List<Cliente> _clienti = [];
+  late List<Dipendente> _dipendenti = [];
 
   dynamic get instance {
     if (_utente is Cliente) {
@@ -42,6 +42,20 @@ class UserDataProvider with ChangeNotifier {
       return null;
   }
 
+  List<Cliente> get clienti => _clienti;
+  void setClienti(List<Cliente> clienti){
+    _clienti = clienti;
+    notifyListeners();
+  }
+  void addClienti(Cliente cliente){
+    _clienti.add(cliente);
+    notifyListeners();
+  }
+
+  void removeClienti(Cliente cliente){
+    _clienti.remove(cliente);
+    notifyListeners();
+  }
   List<Dipendente> get dipendenti => _dipendenti;
   void setDipendenti(List<Dipendente> dipendenti){
     _dipendenti = dipendenti;

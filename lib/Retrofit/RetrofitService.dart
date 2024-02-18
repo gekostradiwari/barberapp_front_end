@@ -9,85 +9,89 @@ import 'package:barberapp_front_end/Model/Cliente.dart';
 import '../Model/Titolare.dart';
 part 'RetrofitService.g.dart';
 
-@RestApi(baseUrl: "http://localhost:8080")
+@RestApi(baseUrl: "http://192.168.1.220:8080")
 abstract class RetrofitService {
   factory RetrofitService(Dio dio) = _RetrofitService;
 
   //Qui vanno scritte le API rest che vanno fatte al backend proprio come sono descritte all'interno del backend controller
-  @GET('clienti/get-all')
+  @GET('/clienti/get-all')
   Future<List<Cliente>> getPosts();
 
-  @POST('cliente/check')
+  @POST('/cliente/check')
   Future<int> checkEmail(@Body() String email);
 
-  @POST('clienti/save')
+  @POST('/clienti/save')
   Future<int> saveCliente(@Body() Cliente cliente);
 
-  @POST('clienti/update')
+  @POST('/clienti/update')
   Future<int> updateCliente(@Body() Cliente cliente);
 
-  @POST('clienti/delete')
+  @POST('/clienti/delete')
   Future<int> deleteCliente(@Body() Cliente cliente);
+  @FormUrlEncoded()
+  @POST('/clienti/login')
+  Future<Cliente?> clienteLogin(@Field("email") String email, @Field("password") String password);
+  @FormUrlEncoded()
+  @POST('/titolari/login')
+  Future<Titolare?> titolareLogin(@Field("email") String email, @Field("password") String password);
 
-  @POST('clienti/login')
-  Future<Cliente?> clienteLogin(@Body() String email, @Body() String password);
-
-  @POST('titolari/login')
-  Future<Titolare?> titolareLogin(@Body() String email, @Body() String password);
-
-  @POST('titolari/delete')
+  @POST('/titolari/delete')
   Future<int> titolareDelete(@Body() Titolare titolare);
 
-  @POST('titolari/check')
+  @POST('/titolari/check')
   Future<int> checkEmailTitolare(@Body() String email);
 
-  @POST('titolari/update')
+  @POST('/titolari/update')
   Future<int> updateTitolare(@Body() Titolare titolare);
 
-  @GET('servizi/get-all')
+  @GET('/servizi/get-all')
   Future<List<Servizio>> getServices();
 
-  @POST('servizi/save')
+  @POST('/servizi/save')
   Future<int> saveServizio(@Body() Servizio servizio);
 
-  @POST('servizi/delete')
+  @POST('/servizi/delete')
   Future<int> deleteServizio(@Body() Servizio servizio);
 
-  @POST('servizi/update')
+  @POST('/servizi/update')
   Future<int> updateServizio(@Body() Servizio servizio);
+  @FormUrlEncoded()
+  @POST('/dipendenti/dipendentiDisponibili')
+  Future<List<Dipendente>> getFreeEmployee(@Field("data") DateTime data, @Field("ora") DateTime ora);
+  @FormUrlEncoded()
+  @POST('/dipendenti/login')
+  Future<Dipendente?> dipendenteLogin(@Field("email") String email, @Field("password") String password);
 
-  @POST('dipendenti/dipendentiDisponibili')
-  Future<List<Dipendente>> getFreeEmployee(@Body() DateTime data, @Body() DateTime ora);
-  @POST('dipendenti/login')
-  Future<Dipendente?> dipendenteLogin(@Body() String email, @Body() String password);
-
-  @GET('dipendenti/get-all')
+  @GET('/dipendenti/get-all')
   Future<List<Dipendente>> dipendentiGetAll();
 
-  @POST('dipendenti/delete')
+  @POST('/dipendenti/getById')
+  Future<Dipendente> getDipendenteById(@Body() int id);
+
+  @POST('/dipendenti/delete')
   Future<int> deleteDipendente(@Body() Dipendente dipendente);
 
-  @POST('appuntamenti/save')
+  @POST('/appuntamenti/save')
   Future<int> saveAppuntamento(@Body() Appuntamento appuntamento);
 
-  @POST('dipendenti/check')
+  @POST('/dipendenti/check')
   Future<int> checkEmailDipendente(@Body() String email);
 
-  @POST('dipendenti/update')
+  @POST('/dipendenti/update')
   Future<int> updateDipendente(@Body() Dipendente dipendente);
 
-  @POST('dipendenti/save')
+  @POST('/dipendenti/save')
   Future<int> saveDipendente(@Body() Dipendente dipendente);
 
-  @POST('appuntamenti/getAppointment-ByCliente')
+  @POST('/appuntamenti/getAppointment-ByCliente')
   Future<List<Appuntamento>> getAppuntamentiByCliente(@Body() Cliente cliente);
 
-  @POST('appuntamenti/getAppointment-ByDipendente')
+  @POST('/appuntamenti/getAppointment-ByDipendente')
   Future<List<Appuntamento>> getAppuntamentiByDipendente(@Body() Dipendente dipendente);
 
-  @POST('appuntamenti/delete')
+  @POST('/appuntamenti/delete')
   Future<int> deleteAppuntamento(@Body() Appuntamento appuntamento);
 
-  @GET('appuntamenti/get-all-appuntamenti')
+  @GET('/appuntamenti/get-all-appuntamenti')
   Future<List<Appuntamento>> getAllAppuntamentiOrdered();
 }

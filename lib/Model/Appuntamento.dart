@@ -12,10 +12,10 @@ class Appuntamento {
   late int id;
   late DateTime data;
   late DateTime ora;
-  late Cliente cliente;
-  late Dipendente? dipendente;
-  late Titolare? titolare;
-  late Servizio? servizio;
+  late int? cliente;
+  late int? dipendente;
+  late int? titolare;
+  late int? servizio;
 
   Appuntamento(this.id, this.data, this.ora, this.cliente, this.dipendente,
       this.titolare, this.servizio);
@@ -42,27 +42,27 @@ class Appuntamento {
     ora = value;
   }
 
-  Cliente get _cliente => cliente;
+  int? get _cliente => cliente;
 
-  set _cliente(Cliente value) {
+  set _cliente(int? value) {
     cliente = value;
   }
 
-  Dipendente? get _dipendente => dipendente;
+  int? get _dipendente => dipendente;
 
-  set _dipendente(Dipendente? value) {
+  set _dipendente(int? value) {
     dipendente = value;
   }
 
-  Titolare? get _titolare => titolare;
+  int? get _titolare => titolare;
 
-  set _titolare(Titolare? value) {
+  set _titolare(int? value) {
     titolare = value;
   }
 
-  Servizio? get _servizio => servizio;
+  int? get _servizio => servizio;
 
-  set _servizio(Servizio? value) {
+  set _servizio(int? value) {
     servizio = value;
   }
 

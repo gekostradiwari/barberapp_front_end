@@ -10,16 +10,10 @@ Appuntamento _$AppuntamentoFromJson(Map<String, dynamic> json) => Appuntamento(
       json['id'] as int,
       DateTime.parse(json['data'] as String),
       DateTime.parse(json['ora'] as String),
-      Cliente.fromJson(json['cliente'] as Map<String, dynamic>),
-      json['dipendente'] == null
-          ? null
-          : Dipendente.fromJson(json['dipendente'] as Map<String, dynamic>),
-      json['titolare'] == null
-          ? null
-          : Titolare.fromJson(json['titolare'] as Map<String, dynamic>),
-      json['servizio'] == null
-          ? null
-          : Servizio.fromJson(json['servizio'] as Map<String, dynamic>),
+      json['cliente'] as int?,
+      json['dipendente'] as int?,
+      json['titolare'] as int?,
+      json['servizio'] as int?,
     );
 
 Map<String, dynamic> _$AppuntamentoToJson(Appuntamento instance) =>

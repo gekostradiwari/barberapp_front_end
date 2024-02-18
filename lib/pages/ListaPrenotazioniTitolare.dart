@@ -22,6 +22,17 @@ class ListaPrenotazioniTitolare extends StatefulWidget {
 
 class _ListaPrenotazioniTitolareState extends State<ListaPrenotazioniTitolare> {
   late Dipendente dipendente;
+  late List<Appuntamento> appuntamenti = Provider.of<UserDataProvider>(context, listen: true).appuntamenti;
+  late List<Cliente> clienti = Provider.of<UserDataProvider>(context, listen: true).clienti;
+  @override
+  void initState() {
+    final retrofitService = RetrofitService(Dio(BaseOptions(contentType: "application/json")));
+    Future<List<Cliente>> futureClienti = retrofitService.getPosts();
+    futureClienti.then((clienti) => {
+      Provider.of<UserDataProvider>(context, listen: false).setClienti(clienti)
+    });
+    super.initState();
+  }
 
 
   @override
@@ -60,10 +71,11 @@ class _ListaPrenotazioniTitolareState extends State<ListaPrenotazioniTitolare> {
       future: retrofitService.getAllAppuntamentiOrdered(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          final List<Appuntamento> appuntamenti = snapshot.data == null ? [] : (snapshot.data as List<Appuntamento>);
+          appuntamenti = snapshot.data == null ? [] : (snapshot.data as List<Appuntamento>);
+          Provider.of<UserDataProvider>(context, listen: false).setAppuntamenti(appuntamenti);
           return  ListView.builder(
             itemCount: appuntamenti.length,//(snapshot.data as List<Appuntamento>).length,
-            itemBuilder: (context, index) => BookTile(appuntamento: appuntamenti[index], callBack: (index) => setState(() =>
+            itemBuilder: (context, index) => BookTile(appuntamento: appuntamenti[index],clienti: clienti, callBack: (index) => setState(() =>
                 retrofitService.deleteAppuntamento(appuntamenti[index])), index: index,
             ),
           );
@@ -78,10 +90,11 @@ class _ListaPrenotazioniTitolareState extends State<ListaPrenotazioniTitolare> {
   }
 }
 class BookTile extends StatelessWidget {
-  const BookTile({super.key,  required this.appuntamento, required this.callBack, required this.index});
+  const BookTile({super.key,  required this.appuntamento,required this.clienti, required this.callBack, required this.index});
   final Appuntamento appuntamento;
   final Function(int) callBack;
   final int index;
+  final List<Cliente> clienti;
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +115,7 @@ class BookTile extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(appuntamento.cliente.nominativo),
+                    Text(clienti.firstWhere((element) => element.id == appuntamento.dipendente).nominativo),
                     Text('${appuntamento.data.toString().substring(0,11)} ${appuntamento.ora.hour}:${appuntamento.ora.minute}'),
                   ],
                 ),

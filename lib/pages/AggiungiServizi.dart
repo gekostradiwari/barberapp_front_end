@@ -23,6 +23,7 @@ class AggiungiServizi extends StatefulWidget {
 class _AggiungiServiziState extends State<AggiungiServizi> {
   final _formKey = GlobalKey<FormBuilderState>();
   String _selectedImage = 'taglio';
+  bool _loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -179,29 +180,28 @@ class _AggiungiServiziState extends State<AggiungiServizi> {
               ),
                         ],
                       )),
+                  _loading ? Center(child: CircularProgressIndicator(),):
                   Padding(
                     padding: EdgeInsets.only(top: 20),
                     child: FilledButton(
-                      onPressed: () {
+                      onPressed: () async{
                         final validation = _formKey.currentState?.validate();
                         if (validation!) {
-                          _formKey.currentState!.save();
-                          Servizio servizio = Servizio(0, _formKey.currentState!.fields['descrizione']!.value.toString(), GetImages.images[_selectedImage]!, _formKey.currentState!.fields['prezzo']!.value,[], Provider.of<UserDataProvider>(context,listen: false).titolare);
-                          late int code;
+                          setState(() {
+                            _loading = true;
+                          });
+                          _formKey.currentState?.save();
+                          print(Provider.of<UserDataProvider>(context,listen: false).titolare.id);
+                          Servizio servizio = Servizio(0, _formKey.currentState!.fields['descrizione']!.value.toString(), GetImages.images[_selectedImage].toString(), double.parse(_formKey.currentState!.fields['prezzo']!.value), Provider.of<UserDataProvider>(context,listen: false).titolare.id);
+                          print(servizio);
                           final retrofitService = RetrofitService(Dio(
                               BaseOptions(contentType: "application/json")));
-                          retrofitService.saveServizio(servizio);
-                              (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.done) {
-                              code = snapshot.data!;
-                            } else {
-                              Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            }
-                          };
+                          int code = await retrofitService.saveServizio(servizio);
+                          setState(() {
+                            _loading = false;
+                          });
                           if (code == 200) {
+                            Provider.of<UserDataProvider>(context, listen: false).addServizi(servizio);
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
@@ -212,7 +212,6 @@ class _AggiungiServiziState extends State<AggiungiServizi> {
                                   actions: [
                                     TextButton(
                                       onPressed: () {
-                                        Provider.of<UserDataProvider>(context, listen: false).addServizi(servizio);
                                         Navigator.pop(
                                             context); // Chiudi il popup
                                       },

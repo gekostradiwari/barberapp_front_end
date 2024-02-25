@@ -74,14 +74,16 @@ class _ListaPrenotazioniState extends State<ListaPrenotazioni> {
      builder: (context, snapshot) {
        if (snapshot.connectionState == ConnectionState.done) {
          appuntamenti = snapshot.data == null ? [] : (snapshot.data as List<Appuntamento>);
+         appuntamenti.forEach((element) {dipendenti.forEach((dipendente) {
+           dipendente.appuntamenti?.forEach((elementA) {if(element.id == elementA.id) element.dipendente = dipendente; });
+         });});
          Provider.of<UserDataProvider>(context, listen: false).setAppuntamenti(appuntamenti);
          return  ListView.builder(
            itemCount: appuntamenti.length,//(snapshot.data as List<Appuntamento>).length,
-           itemBuilder: (context, index) => BookTile(appuntamento: appuntamenti[index], callBack: (index) => setState(() =>
+           itemBuilder: (context, index) => BookTile(appuntamento: appuntamenti[index],appuntamenti: appuntamenti, callBack: (index) => setState(() =>
            retrofitService.deleteAppuntamento(appuntamenti[index])),dipendenti: dipendenti, index: index,
            ),
          );
-
        } else {
          return Center(
            child: CircularProgressIndicator(),
@@ -92,11 +94,12 @@ class _ListaPrenotazioniState extends State<ListaPrenotazioni> {
  }
 }
 class BookTile extends StatelessWidget {
-  const BookTile({super.key,  required this.appuntamento, required this.callBack, required this.dipendenti, required this.index});
+  const BookTile({super.key,  required this.appuntamento,required this.appuntamenti, required this.callBack, required this.dipendenti, required this.index});
   final Appuntamento appuntamento;
   final Function(int) callBack;
   final int index;
   final List<Dipendente> dipendenti;
+  final List<Appuntamento> appuntamenti;
 
   @override
   Widget build(BuildContext context) {
@@ -117,8 +120,8 @@ class BookTile extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(dipendenti.firstWhere((element) => element.id == appuntamento.cliente).nominativo),
-                    Text('${appuntamento.data.toString().substring(0,11)} ${appuntamento.ora.hour}:${appuntamento.ora.minute}'),
+                    Text(appuntamento.dipendente!.nominativo),
+                    Text('${appuntamento.date.toString().substring(0,11)} ${appuntamento.time.hour}:${appuntamento.time.minute}'),
                   ],
                 ),
               ),

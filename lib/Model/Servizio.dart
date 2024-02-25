@@ -8,12 +8,13 @@ part 'Servizio.g.dart';
 @JsonSerializable()
 class Servizio {
   late int id;
-  late String tipo, image;
+  late String tipo, assetImage;
   @DoubleConverter()
   late double costo;
-  late int? titolare;
+  late List<Appuntamento>? appuntamenti;
+  late Titolare? titolare;
 
-  Servizio(this.id, this.tipo,this.image, this.costo, this.titolare);
+  Servizio(this.id, this.tipo,this.assetImage, this.costo,this.appuntamenti, this.titolare);
 
   factory Servizio.fromJson(Map<String, dynamic> json) =>
       _$ServizioFromJson(json);
@@ -38,21 +39,29 @@ class Servizio {
   }
 
 
-  int? get _titolare => titolare;
+  Titolare? get _titolare => titolare;
 
-  set _titolare(int? value) {
+  set _titolare(Titolare? value) {
     titolare = value;
   }
 
-  String get _image => image;
+  List<Appuntamento>? getAppuntamenti(){
+    return appuntamenti;
+  }
 
-  set _image(String image){
-    image = image;
+  void setAppuntamenti(List<Appuntamento>? Appuntamenti){
+    appuntamenti = Appuntamenti;
+  }
+
+  String get _assetImage => assetImage;
+
+  set _assetImage(String image){
+    assetImage = image;
   }
 
   @override
   String toString() {
-    return 'Servizio{id: $id, tipo: $tipo, image: $image, costo: $costo, titolare: $titolare}';
+    return 'Servizio{id: $id, tipo: $tipo, assetImage: $assetImage, costo: $costo, appuntamenti: $appuntamenti, titolare: $titolare}';
   }
 }
 

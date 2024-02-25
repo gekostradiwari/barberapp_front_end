@@ -26,10 +26,6 @@ class BarbersAvaibleState extends State<BarbersAvaible> {
   late List<Dipendente> dipendentiDisponibili;
   Dipendente? _selectedDipendente;
 
-  void initState() {
-    super.initState();
-    appuntamento.cliente = Provider.of<UserDataProvider>(context, listen: false).cliente.id;
-  }
   bool _loading = false;
 
   @override
@@ -70,7 +66,7 @@ class BarbersAvaibleState extends State<BarbersAvaible> {
         RetrofitService(Dio(BaseOptions(contentType: "application/json")));
 
     return FutureBuilder(
-      future: retrofitService.getFreeEmployee(appuntamento.data, appuntamento.ora),
+      future: retrofitService.getFreeEmployee(appuntamento.date, appuntamento.time),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.data == null || snapshot.data == [])
@@ -114,8 +110,9 @@ class BarbersAvaibleState extends State<BarbersAvaible> {
               onTap: (){
                   setState(() {
                     _selectedDipendente = dipendentiDisponibili[index];
+                    print(dipendentiDisponibili[index] == _selectedDipendente);
                     //Appuntamento appuntamento = Provider.of<UserDataProvider>(context, listen: false).appuntamento;
-                    appuntamento.dipendente = _selectedDipendente!.id;
+                    //appuntamento.dipendente = _selectedDipendente;
                     //Navigator.pushNamed(context, '/reservationsPage');
                   });
               },
@@ -149,6 +146,9 @@ class BarbersAvaibleState extends State<BarbersAvaible> {
                 _loading = true;
               });
               final retrofitService = RetrofitService(Dio(BaseOptions(contentType: "application/json")));
+              appuntamento.cliente = Provider.of<UserDataProvider>(context, listen: false).cliente;
+              appuntamento.dipendente = _selectedDipendente;
+              print(appuntamento.toJson());
               int code = await retrofitService.saveAppuntamento(appuntamento);
               if(code == 200){
                 Provider.of<UserDataProvider>(context, listen: false).setAppuntamento(appuntamento);
@@ -216,22 +216,22 @@ class BarbersAvaibleState extends State<BarbersAvaible> {
 }
 
 class DipendentiDisponibiliTile extends StatelessWidget {
-  const DipendentiDisponibiliTile({
+  DipendentiDisponibiliTile({
     Key? key,
     required this.dipendente,
     required this.isSelected,
     required this.onTap,
   }) : super(key: key);
 
-  final Dipendente dipendente;
-  final bool isSelected;
-  final VoidCallback onTap;
+  Dipendente dipendente;
+  bool isSelected;
+  VoidCallback onTap;
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
       child: Container(
-        color: isSelected? Colors.blue.withOpacity(0.5) : null,
+        color: isSelected ? Colors.blue.withOpacity(0.5) : null,
         child: Column(
           children: [
             Padding(

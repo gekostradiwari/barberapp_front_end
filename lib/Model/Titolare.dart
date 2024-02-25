@@ -12,9 +12,10 @@ class Titolare {
   late String password;
   late String nome;
   late String cognome;
+  late List<Servizio>? servizi;
 
 
-  Titolare(this.id, this.email, this.password, this.nome, this.cognome);
+  Titolare(this.id, this.email, this.password, this.nome, this.cognome,this.servizi);
 
   factory Titolare.fromJson(Map<String, dynamic> json) =>
       _$TitolareFromJson(json);
@@ -49,11 +50,15 @@ class Titolare {
   set _cognome(String value) {
     cognome = value;
   }
-
-
+  List<Servizio>? getServizi(){
+    return servizi;
+  }
+  void setServizi(List<Servizio>? Servizi){
+    servizi = Servizi;
+  }
 
   @override
   String toString() {
-    return 'Titolare{id: $id, email: $email, password: $password, nome: $nome, cognome: $cognome}';
+    return 'Titolare{id: $id, email: $email, password: $password, nome: $nome, cognome: $cognome, servizi: $servizi}';
   }
 }

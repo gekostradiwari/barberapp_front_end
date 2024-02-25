@@ -192,7 +192,7 @@ class _AggiungiServiziState extends State<AggiungiServizi> {
                           });
                           _formKey.currentState?.save();
                           print(Provider.of<UserDataProvider>(context,listen: false).titolare.id);
-                          Servizio servizio = Servizio(0, _formKey.currentState!.fields['descrizione']!.value.toString(), GetImages.images[_selectedImage].toString(), double.parse(_formKey.currentState!.fields['prezzo']!.value), Provider.of<UserDataProvider>(context,listen: false).titolare.id);
+                          Servizio servizio = Servizio(0, _formKey.currentState!.fields['descrizione']!.value.toString(), GetImages.images[_selectedImage]!, double.parse(_formKey.currentState!.fields['prezzo']!.value), [],Provider.of<UserDataProvider>(context,listen: false).titolare);
                           print(servizio);
                           final retrofitService = RetrofitService(Dio(
                               BaseOptions(contentType: "application/json")));

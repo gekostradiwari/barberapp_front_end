@@ -102,7 +102,7 @@ class ServiceTile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Image.asset(
-                  GetImages.images[servizio.image] ?? GetImages.images["default"]!,
+                  servizio.assetImage ?? GetImages.images["default"]!,
                   width: 128,
                   height: 64,
                   fit: BoxFit.fitWidth,

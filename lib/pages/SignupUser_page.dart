@@ -272,7 +272,8 @@ class _SignupUser_pageState extends State<SignupUser_page>{
                               Cliente cliente = Cliente(0,_formKey.currentState!.fields['nome']!.value.toString(),
                                   _formKey.currentState!.fields['cognome']!.value.toString(),
                                   _formKey.currentState!.fields['email']!.value.toString(),
-                                  _formKey.currentState!.fields['password']!.value.toString()
+                                  _formKey.currentState!.fields['password']!.value.toString(),
+                                []
                               );
                               Provider.of<UserDataProvider>(context, listen: false).setCliente(cliente);
                               final retrofitService = RetrofitService(Dio(BaseOptions(contentType: "application/json")));

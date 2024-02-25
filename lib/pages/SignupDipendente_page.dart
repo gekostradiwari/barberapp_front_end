@@ -282,7 +282,8 @@ class _SignupDipendente_pageState extends State<SignupDipendente_page>{
                               Dipendente dipendente = Dipendente(0,_formKey.currentState!.fields['nome']!.value.toString(),
                                   _formKey.currentState!.fields['cognome']!.value.toString(),
                                   _formKey.currentState!.fields['email']!.value.toString(),
-                                  _formKey.currentState!.fields['password']!.value.toString()
+                                  _formKey.currentState!.fields['password']!.value.toString(),
+                                []
                               );
                               Provider.of<UserDataProvider>(context, listen: false).setDipendente(dipendente);
                               Provider.of<UserDataProvider>(context, listen: false).addDipendenti(dipendente);

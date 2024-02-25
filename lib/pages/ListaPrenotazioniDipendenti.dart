@@ -116,7 +116,7 @@ class BookTile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(clienti.firstWhere((element) => element.id == appuntamento.dipendente).nominativo),
-                    Text('${appuntamento.data.toString().substring(0,11)} ${appuntamento.ora.hour}:${appuntamento.ora.minute}'),
+                    Text('${appuntamento.date.toString().substring(0,11)} ${appuntamento.time.hour}:${appuntamento.time.minute}'),
                   ],
                 ),
               ),

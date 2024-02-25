@@ -12,6 +12,9 @@ Cliente _$ClienteFromJson(Map<String, dynamic> json) => Cliente(
       json['cognome'] as String,
       json['email'] as String,
       json['password'] as String,
+      (json['appuntamenti'] as List<dynamic>?)
+          ?.map((e) => Appuntamento.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$ClienteToJson(Cliente instance) => <String, dynamic>{
@@ -20,4 +23,5 @@ Map<String, dynamic> _$ClienteToJson(Cliente instance) => <String, dynamic>{
       'cognome': instance.cognome,
       'email': instance.email,
       'password': instance.password,
+      'appuntamenti': instance.appuntamenti,
     };

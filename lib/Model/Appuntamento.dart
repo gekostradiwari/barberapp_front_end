@@ -10,15 +10,13 @@ part 'Appuntamento.g.dart';
 @JsonSerializable()
 class Appuntamento {
   late int id;
-  late DateTime data;
-  late DateTime ora;
-  late int? cliente;
-  late int? dipendente;
-  late int? titolare;
-  late int? servizio;
+  late DateTime date;
+  late DateTime time;
+  late Cliente? cliente;
+  late Dipendente? dipendente;
+  late Servizio? servizio;
 
-  Appuntamento(this.id, this.data, this.ora, this.cliente, this.dipendente,
-      this.titolare, this.servizio);
+  Appuntamento(this.id, this.date, this.time, this.cliente, this.dipendente, this.servizio);
 
   factory Appuntamento.fromJson(Map<String, dynamic> json) =>
       _$AppuntamentoFromJson(json);
@@ -30,49 +28,42 @@ class Appuntamento {
     id = value;
   }
 
-  DateTime get _data => data;
+  DateTime get _date => date;
 
-  set _data(DateTime value) {
-    data = value;
+  set _date(DateTime value) {
+    date = value;
   }
 
-  DateTime get _ora => ora;
+  DateTime get _time => time;
 
-  set _ora(DateTime value) {
-    ora = value;
+  set _time(DateTime value) {
+    time = value;
   }
 
-  int? get _cliente => cliente;
+  Cliente? get _cliente => cliente;
 
-  set _cliente(int? value) {
+  set _cliente(Cliente? value) {
     cliente = value;
   }
 
-  int? get _dipendente => dipendente;
+  Dipendente? get _dipendente => dipendente;
 
-  set _dipendente(int? value) {
+  set _dipendente(Dipendente? value) {
     dipendente = value;
   }
+  Servizio? get _servizio => servizio;
 
-  int? get _titolare => titolare;
-
-  set _titolare(int? value) {
-    titolare = value;
-  }
-
-  int? get _servizio => servizio;
-
-  set _servizio(int? value) {
+  set _servizio(Servizio? value) {
     servizio = value;
   }
 
-  bool isActive() => DateTime.now().toUtc().millisecond > (data.millisecond + _hourMillisecond);
+  bool isActive() => DateTime.now().toUtc().millisecond > (date.millisecond + _hourMillisecond);
 
 
-  int get _hourMillisecond => ora.millisecond - DateTime(ora.year, ora.month,ora.day).millisecond;
+  int get _hourMillisecond => time.millisecond - DateTime(time.year, time.month,time.day).millisecond;
 
   @override
   String toString() {
-    return 'Appuntamento{id: $id, data: $data, ora: $ora, cliente: $cliente, dipendente: $dipendente, titolare: $titolare, servizio: $servizio}';
+    return 'Appuntamento{id: $id, date: $date, time: $time, cliente: $cliente, dipendente: $dipendente, servizio: $servizio}';
   }
 }

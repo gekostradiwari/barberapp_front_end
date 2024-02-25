@@ -14,8 +14,8 @@ import 'NavigationTab.dart';
 
 
 class PrenotazioneEffettuata extends StatelessWidget {
-  const PrenotazioneEffettuata({super.key});
-
+  final BuildContext context;
+  const PrenotazioneEffettuata({Key? key, required this.context}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,9 +62,8 @@ class PrenotazioneEffettuata extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(top: 20.0),
           child: FilledButton(onPressed: (){
-            MaterialPageRoute(builder: (context) => NavigationTab());
-
-          },
+            Navigator.pushNamed(context, '/NavigationTab');
+            },
             style: ButtonStyle(
             backgroundColor:
             const MaterialStatePropertyAll<Color>(Color(0xFF102C57)),

@@ -47,7 +47,7 @@ class RouteGenerator {
       case '/BarbersAvaible':
         return MaterialPageRoute(builder: (context) => BarbersAvaible());
       case '/prenotazioneEffettuata':
-        return MaterialPageRoute(builder: (context) => PrenotazioneEffettuata());
+        return MaterialPageRoute(builder: (context) => PrenotazioneEffettuata(context: context,));
       case '/ProfiloUtente':
         return MaterialPageRoute(builder: (context) => ProfiloUtente());
       case '/ListaPrenotazioniDipendente':

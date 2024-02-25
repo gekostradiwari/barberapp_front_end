@@ -116,7 +116,7 @@ class _ServiceTileState extends State<ServiceTile>{
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Image.asset(
-                GetImages.images[widget.servizio.image] ?? GetImages.images["default"]!,
+                widget.servizio.assetImage ?? GetImages.images["default"]!,
                 width: 128,
                 height: 64,
                 fit: BoxFit.fitWidth,

@@ -25,8 +25,8 @@ class ReservationsPage extends StatefulWidget{
 }
 
 class ReservationsPageState_ extends State<ReservationsPage>{
-  late Servizio servizio = Provider.of<UserDataProvider>(context, listen: true).servizio;
-  late Cliente cliente = Provider.of<UserDataProvider>(context, listen: true).cliente;
+  late Servizio servizio = Provider.of<UserDataProvider>(context, listen: false).servizio;
+  late Cliente cliente = Provider.of<UserDataProvider>(context, listen: false).cliente;
 
 
   final _formKey = GlobalKey<FormBuilderState>();
@@ -216,7 +216,7 @@ class ReservationsPageState_ extends State<ReservationsPage>{
                     final validation = _formKey.currentState?.validate();
                     if(validation! && _oraFinale.hour != 13 && _oraFinale.hour != 14){
                       _formKey.currentState!.save();
-                      Appuntamento appuntamento = Appuntamento(1, _formKey.currentState!.fields['OrologioEdata']!.value, _oraFinale,cliente.id, 0, null, servizio.id);
+                      Appuntamento appuntamento = Appuntamento(1, _formKey.currentState!.fields['OrologioEdata']!.value, _oraFinale,cliente,null , servizio);
                       Provider.of<UserDataProvider>(context, listen: false).setAppuntamento(appuntamento);
                       Navigator.pushNamed(context, '/BarbersAvaible');
 

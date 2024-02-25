@@ -12,6 +12,9 @@ Titolare _$TitolareFromJson(Map<String, dynamic> json) => Titolare(
       json['password'] as String,
       json['nome'] as String,
       json['cognome'] as String,
+      (json['servizi'] as List<dynamic>?)
+          ?.map((e) => Servizio.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$TitolareToJson(Titolare instance) => <String, dynamic>{
@@ -20,4 +23,5 @@ Map<String, dynamic> _$TitolareToJson(Titolare instance) => <String, dynamic>{
       'password': instance.password,
       'nome': instance.nome,
       'cognome': instance.cognome,
+      'servizi': instance.servizi,
     };

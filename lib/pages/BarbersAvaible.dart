@@ -106,7 +106,7 @@ class BarbersAvaibleState extends State<BarbersAvaible> {
             itemCount: dipendentiDisponibili.length,
             itemBuilder: (context, index) => DipendentiDisponibiliTile(
                 dipendente: dipendentiDisponibili[index],
-                    isSelected: dipendentiDisponibili[index] == _selectedDipendente,
+                    isSelected: (dipendentiDisponibili[index].id == _selectedDipendente?.id) ? true : false,
               onTap: (){
                   setState(() {
                     _selectedDipendente = dipendentiDisponibili[index];
@@ -230,7 +230,8 @@ class DipendentiDisponibiliTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      child: Container(
+      child: AnimatedContainer(
+        duration: const Duration(seconds: 1),
         color: isSelected ? Colors.blue.withOpacity(0.5) : null,
         child: Column(
           children: [

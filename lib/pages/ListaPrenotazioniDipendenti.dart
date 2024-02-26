@@ -72,6 +72,9 @@ class _ListaPrenotazioniDipendentiState extends State<ListaPrenotazioniDipendent
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           appuntamenti = snapshot.data == null ? [] : (snapshot.data as List<Appuntamento>);
+          appuntamenti.forEach((element) {clienti.forEach((cliente) {
+            cliente.appuntamenti?.forEach((elementA) {if(element.id == elementA.id) element.cliente = cliente; });
+          });});
           Provider.of<UserDataProvider>(context, listen: false).setAppuntamenti(appuntamenti);
           return  ListView.builder(
             itemCount: appuntamenti.length,//(snapshot.data as List<Appuntamento>).length,
@@ -115,42 +118,11 @@ class BookTile extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(clienti.firstWhere((element) => element.id == appuntamento.dipendente).nominativo),
+                    Text(appuntamento.cliente!.nominativo),
                     Text('${appuntamento.date.toString().substring(0,11)} ${appuntamento.time.hour}:${appuntamento.time.minute}'),
                   ],
                 ),
               ),
-              const Expanded(child: SizedBox()),
-              appuntamento.isActive()?
-              Padding(
-                padding: const EdgeInsets.only(right: 16.0),
-                child: InkWell(
-                    onTap: () async {
-                      bool? res = await showDialog<bool>(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text(
-                              "Vuoi davvero eliminare questo elemento?"),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.of(context).pop(true),
-                              child: const Text("Si"),
-                            ),
-                            TextButton(
-                              onPressed: () => Navigator.of(context).pop(false),
-                              child: const Text("No"),
-                            ),
-                          ],
-                        ),
-                      );
-                      if (res != null && res == true){
-                        callBack(index);
-                      }
-                      log(res.toString());
-                    },
-                    child: const Icon(Icons.delete_outline)),
-              )
-                  : const SizedBox(),
             ],
           ),
         ),

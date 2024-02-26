@@ -212,8 +212,7 @@ class _AggiungiServiziState extends State<AggiungiServizi> {
                                   actions: [
                                     TextButton(
                                       onPressed: () {
-                                        Navigator.pop(
-                                            context); // Chiudi il popup
+                                        Navigator.pushNamed(context, '/NavigationTabTitolare'); // Chiudi il popup
                                       },
                                       child: Text('OK'),
                                     ),

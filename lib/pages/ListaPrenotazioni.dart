@@ -34,6 +34,17 @@ class _ListaPrenotazioniState extends State<ListaPrenotazioni> {
    });
     super.initState();
   }
+ Future<void> _deleteAppuntamento(int index) async {
+   final retrofitService =
+   RetrofitService(Dio(BaseOptions(contentType: "application/json")));
+   final int responseCode =
+   await retrofitService.deleteAppuntamento(appuntamenti[index]);
+   if (responseCode == 200) {
+     setState(() {
+       appuntamenti.removeAt(index); // Rimuovi l'appuntamento dalla lista
+     });
+   }
+ }
 
 
 
@@ -80,8 +91,7 @@ class _ListaPrenotazioniState extends State<ListaPrenotazioni> {
          Provider.of<UserDataProvider>(context, listen: false).setAppuntamenti(appuntamenti);
          return  ListView.builder(
            itemCount: appuntamenti.length,//(snapshot.data as List<Appuntamento>).length,
-           itemBuilder: (context, index) => BookTile(appuntamento: appuntamenti[index],appuntamenti: appuntamenti, callBack: (index) => setState(() =>
-           retrofitService.deleteAppuntamento(appuntamenti[index])),dipendenti: dipendenti, index: index,
+           itemBuilder: (context, index) => BookTile(appuntamento: appuntamenti[index],appuntamenti: appuntamenti, callBack: (index) => _deleteAppuntamento(index),dipendenti: dipendenti, index: index,
            ),
          );
        } else {

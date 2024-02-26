@@ -24,6 +24,18 @@ class _ListaDipendentiState extends State<ListaDipendenti> {
   late Dipendente dipendente;
   late List<Dipendente> dipendentiList = Provider.of<UserDataProvider>(context,listen: true).dipendenti;
 
+  Future<void> deleteDipendente(int index) async {
+    final retrofitService =
+    RetrofitService(Dio(BaseOptions(contentType: "application/json")));
+    final int responseCode =
+    await retrofitService.deleteDipendente(dipendentiList[index]);
+    if (responseCode == 200) {
+      setState(() {
+        dipendentiList.removeAt(index); // Rimuovi il dipendente dalla lista
+      });
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -71,8 +83,7 @@ class _ListaDipendentiState extends State<ListaDipendenti> {
           Provider.of<UserDataProvider>(context, listen: false).setDipendenti(dipendentiList);
           return  ListView.builder(
             itemCount: dipendentiList.length,//(snapshot.data as List<Appuntamento>).length,
-            itemBuilder: (context, index) => BookTile(dipendente: dipendentiList[index], callBack: (index) => setState(() =>
-                retrofitService.deleteDipendente(dipendentiList[index])), index: index,
+            itemBuilder: (context, index) => BookTile(dipendente: dipendentiList[index], callBack: (index) => deleteDipendente(index), index: index,
             ),
           );
 

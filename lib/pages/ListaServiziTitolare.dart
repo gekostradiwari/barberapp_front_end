@@ -24,6 +24,31 @@ class _ListaServiziTitolareState extends State<ListaServiziTitolare> {
   ];*/
 
   late List<Servizio>services = Provider.of<UserDataProvider>(context, listen: true).servizi;
+  Future<void> _deleteServizio(int index) async {
+    final retrofitService =
+    RetrofitService(Dio(BaseOptions(contentType: "application/json")));
+    final int responseCode =
+    await retrofitService.deleteServizio(services[index]);
+    if (responseCode == 200) {
+      setState(() {
+        services.removeAt(index); // Rimuovi l'appuntamento dalla lista
+      });
+    }
+  }
+  Future<void> _updateServizio(int index) async {
+    Servizio temp = services[index];
+    print(temp);
+    final retrofitService =
+    RetrofitService(Dio(BaseOptions(contentType: "application/json")));
+    final int responseCode =
+    await retrofitService.updateServizio(services[index]);
+    if (responseCode == 200) {
+      setState(() {
+        services.removeAt(index);
+        services.add(temp);// Rimuovi l'appuntamento dalla lista
+      });
+    }
+  }
 
 
   @override
@@ -80,8 +105,7 @@ class _ListaServiziTitolareState extends State<ListaServiziTitolare> {
   Widget _services(List<Servizio> services, RetrofitService retrofitService){
     return ListView.builder(
       itemCount: services.length,//(snapshot.data as List<Appuntamento>).length,
-      itemBuilder: (context, index) => ServiceTile(servizio: services[index], callBack: (index) => setState(() =>
-          retrofitService.deleteServizio(services[index])),callBack2: (index) => setState(()=> retrofitService.updateServizio(services[index])), index: index,
+      itemBuilder: (context, index) => ServiceTile(servizio: services[index], callBack: (index) => _deleteServizio(index),callBack2: (index) => _updateServizio(index), index: index,
       ),
     );
   }

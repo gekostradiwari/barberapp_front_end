@@ -21,7 +21,7 @@ class ListaPrenotazioniTitolare extends StatefulWidget {
 }
 
 class _ListaPrenotazioniTitolareState extends State<ListaPrenotazioniTitolare> {
-  late Dipendente dipendente;
+  late List<Dipendente> dipendenti = Provider.of<UserDataProvider>(context, listen: true).dipendenti;
   late List<Appuntamento> appuntamenti = Provider.of<UserDataProvider>(context, listen: true).appuntamenti;
   late List<Cliente> clienti = Provider.of<UserDataProvider>(context, listen: true).clienti;
   @override
@@ -31,7 +31,23 @@ class _ListaPrenotazioniTitolareState extends State<ListaPrenotazioniTitolare> {
     futureClienti.then((clienti) => {
       Provider.of<UserDataProvider>(context, listen: false).setClienti(clienti)
     });
+    Future<List<Dipendente>> futureDipendenti = retrofitService.dipendentiGetAll();
+    futureDipendenti.then((dipendenti) => {
+      Provider.of<UserDataProvider>(context, listen: false).setDipendenti(dipendenti)
+    });
     super.initState();
+  }
+
+  Future<void> _deleteAppuntamento(int index) async {
+    final retrofitService =
+    RetrofitService(Dio(BaseOptions(contentType: "application/json")));
+    final int responseCode =
+    await retrofitService.deleteAppuntamento(appuntamenti[index]);
+    if (responseCode == 200) {
+      setState(() {
+        appuntamenti.removeAt(index); // Rimuovi l'appuntamento dalla lista
+      });
+    }
   }
 
 
@@ -72,11 +88,16 @@ class _ListaPrenotazioniTitolareState extends State<ListaPrenotazioniTitolare> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           appuntamenti = snapshot.data == null ? [] : (snapshot.data as List<Appuntamento>);
+          appuntamenti.forEach((element) {dipendenti.forEach((dipendente) {
+            dipendente.appuntamenti?.forEach((elementA) {if(element.id == elementA.id) element.dipendente = dipendente; });
+          });});
+          appuntamenti.forEach((element) {clienti.forEach((cliente) {
+            cliente.appuntamenti?.forEach((elementA) {if(element.id == elementA.id) element.cliente = cliente; });
+          });});
           Provider.of<UserDataProvider>(context, listen: false).setAppuntamenti(appuntamenti);
           return  ListView.builder(
             itemCount: appuntamenti.length,//(snapshot.data as List<Appuntamento>).length,
-            itemBuilder: (context, index) => BookTile(appuntamento: appuntamenti[index],clienti: clienti, callBack: (index) => setState(() =>
-                retrofitService.deleteAppuntamento(appuntamenti[index])), index: index,
+            itemBuilder: (context, index) => BookTile(appuntamento: appuntamenti[index],clienti: clienti, callBack: (index) => _deleteAppuntamento(index), index: index,
             ),
           );
 
@@ -95,6 +116,7 @@ class BookTile extends StatelessWidget {
   final Function(int) callBack;
   final int index;
   final List<Cliente> clienti;
+
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +137,8 @@ class BookTile extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(clienti.firstWhere((element) => element.id == appuntamento.dipendente).nominativo),
+                    Text(appuntamento.cliente!.nominativo),
+                    Text(appuntamento.dipendente!.nominativo),
                     Text('${appuntamento.date.toString().substring(0,11)} ${appuntamento.time.hour}:${appuntamento.time.minute}'),
                   ],
                 ),

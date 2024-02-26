@@ -43,13 +43,16 @@ class _SignupDipendente_pageState extends State<SignupDipendente_page>{
                 mainAxisAlignment: MainAxisAlignment.start,
                 verticalDirection: VerticalDirection.down,
                 children: [
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: IconButton(
-                      onPressed: (){
-                        Navigator.pop(context);
-                        },
-                      icon: Icon(Icons.arrow_back),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: IconButton(
+                        onPressed: (){
+                          Navigator.pop(context);
+                          },
+                        icon: Icon(Icons.arrow_back),
+                      ),
                     ),
                   ),
                   Padding(
